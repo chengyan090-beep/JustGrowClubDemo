@@ -10,3 +10,4 @@
 - 社区运营方的需求面板、AI 活动提案和推送流程
 
 发布后可通过 GitHub Pages 直接访问。
+https://chengyan090-beep.github.io/JustGrowClubDemo/
