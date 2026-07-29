@@ -1,4 +1,12 @@
 # JustGrowClubDemo
-JustGrowClubDemo
-链接：
-https://chengyan090-beep.github.io/JustGrowClubDemo/
+
+恰好关系推荐官 / 筑光公社 AI 社区关系运营小程序 Demo。
+
+这是一个静态 HTML 原型，用于展示：
+
+- 用户首次进入、精准问答、上传生活照与人物画像生成
+- 用户公开展示页、推荐主页和活动详情
+- 主理人 / 商户的社区需求响应入口
+- 社区运营方的需求面板、AI 活动提案和推送流程
+
+发布后可通过 GitHub Pages 直接访问。
