@@ -117,6 +117,10 @@
       display: none;
     }
 
+    .mobile-roles {
+      display: none;
+    }
+
     .step {
       width: 100%;
       min-height: 70px;
@@ -648,6 +652,11 @@
       line-height: 1.4;
     }
 
+    .demand-card .option-grid {
+      grid-template-columns: 1fr;
+      gap: 7px;
+    }
+
     .option.active, .option:hover {
       border-color: var(--green);
       background: var(--mint);
@@ -785,8 +794,9 @@
 
     .photo-node.has-photo {
       background:
-        radial-gradient(circle at 68% 28%, rgba(255,255,255,.68), transparent 20%),
-        linear-gradient(135deg, #f0c35b, #ec7a3a 48%, #0f5b42);
+        linear-gradient(180deg, rgba(255,255,255,.04), rgba(15,91,66,.22)),
+        url("assets/xiaoc-avatar.png") center 18% / 76% auto no-repeat,
+        #f4eadf;
       color: #fffaf0;
       text-shadow: 0 2px 10px rgba(0,0,0,.2);
     }
@@ -808,8 +818,9 @@
       height: 74px;
       border-radius: 22px;
       background:
-        radial-gradient(circle at 70% 28%, rgba(255,255,255,.6), transparent 20%),
-        linear-gradient(135deg, #f0c35b, #ec7a3a 48%, #0f5b42);
+        linear-gradient(180deg, rgba(255,255,255,.04), rgba(15,91,66,.22)),
+        url("assets/xiaoc-avatar.png") center 18% / 86% auto no-repeat,
+        #f4eadf;
       box-shadow: 0 12px 22px rgba(49,42,32,.12);
     }
 
@@ -1026,16 +1037,14 @@
     .solution-photo {
       position: relative;
       background:
-        linear-gradient(180deg, rgba(0,0,0,0), rgba(0,0,0,.42)),
-        radial-gradient(circle at 64% 18%, rgba(255,255,255,.42), transparent 21%),
-        linear-gradient(135deg, #2f9c78, #0f5b42 52%, #1f2f2a);
+        linear-gradient(180deg, rgba(0,0,0,0), rgba(0,0,0,.44)),
+        url("assets/event-dinner-chat.png") center / cover no-repeat;
     }
 
     .solution-photo.warm {
       background:
-        linear-gradient(180deg, rgba(0,0,0,0), rgba(0,0,0,.38)),
-        radial-gradient(circle at 68% 20%, rgba(255,255,255,.42), transparent 21%),
-        linear-gradient(135deg, #f0c35b, #ec7a3a 46%, #0f5b42);
+        linear-gradient(180deg, rgba(0,0,0,0), rgba(0,0,0,.42)),
+        url("assets/event-walk-lightmeal.png") center / cover no-repeat;
     }
 
     .solution-photo span {
@@ -1204,9 +1213,14 @@
     .event-photo {
       position: relative;
       background:
-        linear-gradient(180deg, rgba(0,0,0,0), rgba(0,0,0,.38)),
-        radial-gradient(circle at 70% 18%, rgba(255,255,255,.44), transparent 20%),
-        linear-gradient(135deg, #7fc1a0, #0f5b42 46%, #25312d);
+        linear-gradient(180deg, rgba(0,0,0,0), rgba(0,0,0,.42)),
+        url("assets/event-dinner-chat.png") center / cover no-repeat;
+    }
+
+    .event-card.warm .event-photo {
+      background:
+        linear-gradient(180deg, rgba(0,0,0,0), rgba(0,0,0,.42)),
+        url("assets/event-walk-lightmeal.png") center / cover no-repeat;
     }
 
     .event-photo span {
@@ -1265,9 +1279,8 @@
       justify-content: flex-end;
       color: #fffaf0;
       background:
-        linear-gradient(180deg, rgba(0,0,0,.12), rgba(0,0,0,.58)),
-        radial-gradient(circle at 78% 24%, rgba(245,203,94,.32), transparent 22%),
-        linear-gradient(135deg, #18322a, #0f5b42 52%, #ec7a3a);
+        linear-gradient(180deg, rgba(0,0,0,.12), rgba(0,0,0,.62)),
+        url("assets/event-dinner-chat.png") center / cover no-repeat;
     }
 
     .detail-hero-photo h2 {
@@ -1403,8 +1416,9 @@
       height: 88px;
       border-radius: 28px;
       background:
-        radial-gradient(circle at 68% 28%, rgba(255,255,255,.65), transparent 20%),
-        linear-gradient(135deg, #f0c35b, #ec7a3a 48%, #0f5b42);
+        linear-gradient(180deg, rgba(255,255,255,.04), rgba(15,91,66,.22)),
+        url("assets/xiaoc-avatar.png") center 18% / 86% auto no-repeat,
+        #f4eadf;
       box-shadow: 0 14px 28px rgba(49,42,32,.14);
     }
 
@@ -1630,6 +1644,273 @@
     .need-bubble.gold { background: var(--gold); }
     .need-bubble.blue { background: #4e91a0; }
 
+    .ops-hero {
+      padding: 14px;
+      border-radius: 8px;
+      background: linear-gradient(135deg, #163f34, #2f7a68 58%, #d7864b);
+      color: #fffaf0;
+      margin-bottom: 10px;
+    }
+
+    .ops-hero small {
+      display: block;
+      color: rgba(255,250,240,.72);
+      font-size: 10px;
+      margin-bottom: 6px;
+    }
+
+    .ops-hero h3 {
+      margin: 0;
+      font-size: 16px;
+      line-height: 1.25;
+    }
+
+    .ops-hero p {
+      margin: 7px 0 0;
+      font-size: 11px;
+      line-height: 1.45;
+      color: rgba(255,250,240,.82);
+    }
+
+    .ops-kpis {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 7px;
+      margin-bottom: 10px;
+    }
+
+    .ops-kpi {
+      min-height: 58px;
+      border-radius: 8px;
+      background: #fff;
+      border: 1px solid #ece5da;
+      padding: 9px;
+    }
+
+    .ops-kpi b {
+      display: block;
+      color: var(--green);
+      font-size: 17px;
+      line-height: 1;
+      margin-bottom: 5px;
+    }
+
+    .ops-kpi span {
+      display: block;
+      color: var(--muted);
+      font-size: 9px;
+      line-height: 1.25;
+    }
+
+    .need-list {
+      display: grid;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+
+    .need-row {
+      background: #fff;
+      border: 1px solid #ece5da;
+      border-radius: 8px;
+      padding: 10px;
+    }
+
+    .need-row-head {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 8px;
+      align-items: center;
+      margin-bottom: 7px;
+    }
+
+    .need-row-head b {
+      font-size: 12px;
+    }
+
+    .need-row-head span {
+      color: var(--muted);
+      font-size: 10px;
+    }
+
+    .need-bar {
+      height: 7px;
+      border-radius: 999px;
+      background: #ebe7dd;
+      overflow: hidden;
+    }
+
+    .need-bar i {
+      display: block;
+      height: 100%;
+      border-radius: inherit;
+      background: linear-gradient(90deg, var(--green), var(--orange));
+    }
+
+    .quote-card {
+      border-radius: 8px;
+      background: #fff;
+      border: 1px solid #ece5da;
+      padding: 10px;
+      margin-bottom: 8px;
+    }
+
+    .quote-card p {
+      margin: 0;
+      font-size: 11px;
+      line-height: 1.45;
+      color: var(--ink);
+    }
+
+    .quote-card span {
+      display: block;
+      margin-top: 6px;
+      font-size: 10px;
+      color: var(--muted);
+    }
+
+    .need-tree {
+      display: grid;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+
+    .tree-branch {
+      border-radius: 8px;
+      background: #fff;
+      border: 1px solid #ece5da;
+      padding: 10px;
+    }
+
+    .tree-branch h3 {
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+      align-items: center;
+      margin: 0 0 8px;
+      font-size: 13px;
+    }
+
+    .tree-branch h3 span {
+      color: var(--muted);
+      font-size: 10px;
+      font-weight: 700;
+    }
+
+    .tree-items {
+      display: grid;
+      gap: 6px;
+    }
+
+    .tree-item {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 8px;
+      align-items: center;
+      min-height: 34px;
+      border-radius: 8px;
+      background: #f8f6ef;
+      padding: 7px 8px;
+      font-size: 11px;
+    }
+
+    .tree-item em {
+      font-style: normal;
+      color: var(--green);
+      font-weight: 800;
+      font-size: 10px;
+    }
+
+    .resource-map {
+      display: grid;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+
+    .resource-card {
+      display: grid;
+      grid-template-columns: 34px 1fr auto;
+      gap: 9px;
+      align-items: center;
+      border-radius: 8px;
+      background: #fff;
+      border: 1px solid #ece5da;
+      padding: 9px;
+    }
+
+    .resource-icon {
+      width: 34px;
+      height: 34px;
+      border-radius: 8px;
+      display: grid;
+      place-items: center;
+      background: var(--mint);
+      color: var(--green);
+      font-weight: 800;
+      font-size: 16px;
+    }
+
+    .resource-card b {
+      display: block;
+      font-size: 12px;
+      margin-bottom: 3px;
+    }
+
+    .resource-card span {
+      color: var(--muted);
+      font-size: 10px;
+      line-height: 1.3;
+    }
+
+    .match-score {
+      color: var(--orange);
+      font-weight: 900;
+      font-size: 12px;
+    }
+
+    .proposal-card {
+      border-radius: 8px;
+      background: #fff;
+      border: 1px solid #ece5da;
+      padding: 12px;
+      margin-bottom: 10px;
+    }
+
+    .proposal-card h3 {
+      margin: 0 0 6px;
+      font-size: 14px;
+    }
+
+    .proposal-card p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 11px;
+      line-height: 1.45;
+    }
+
+    .proposal-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 7px;
+      margin-top: 10px;
+    }
+
+    .proposal-box {
+      min-height: 54px;
+      border-radius: 8px;
+      background: #f8f6ef;
+      padding: 8px;
+      font-size: 10px;
+      line-height: 1.35;
+      color: var(--muted);
+    }
+
+    .proposal-box b {
+      display: block;
+      color: var(--ink);
+      font-size: 11px;
+      margin-bottom: 3px;
+    }
+
     .match-row {
       display: grid;
       grid-template-columns: 1fr 24px 1fr;
@@ -1807,6 +2088,14 @@
     .phone-body {
       height: calc(100% - 46px - 50px - 70px);
       background: #f4f4ee;
+    }
+
+    .phone-shell.workbench-mode .phone-body {
+      height: calc(100% - 46px - 50px);
+    }
+
+    .phone-shell.workbench-mode .bottom-tabs {
+      display: none;
     }
 
     .scroll {
@@ -2135,6 +2424,10 @@
         height: calc(100dvh - 40px - env(safe-area-inset-top, 0px) - 50px - 68px - env(safe-area-inset-bottom, 0px));
       }
 
+      .phone-shell.workbench-mode .phone-body {
+        height: calc(100dvh - 40px - env(safe-area-inset-top, 0px) - 50px);
+      }
+
       .scroll {
         padding: 10px 12px calc(22px + env(safe-area-inset-bottom, 0px));
       }
@@ -2149,6 +2442,28 @@
       }
 
       .mobile-flow::-webkit-scrollbar { display: none; }
+
+      .mobile-roles {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 6px;
+        padding: 2px 2px 8px;
+      }
+
+      .mobile-role {
+        border: 0;
+        min-height: 30px;
+        border-radius: 8px;
+        background: rgba(255,255,255,.82);
+        color: var(--muted);
+        font-size: 10px;
+        font-weight: 700;
+      }
+
+      .mobile-role.active {
+        background: var(--green);
+        color: #fffaf0;
+      }
 
       .mobile-step {
         border: 0;
@@ -2254,6 +2569,11 @@
       </div>
       <div class="phone-body">
         <div class="scroll">
+          <div class="mobile-roles" aria-label="手机端角色切换">
+            <button class="mobile-role active" data-role="user">用户</button>
+            <button class="mobile-role" data-role="partner">资源方</button>
+            <button class="mobile-role" data-role="ops">运营端</button>
+          </div>
           <div class="mobile-flow" id="mobileFlow" aria-label="手机端流程切换"></div>
           <div id="screen"></div>
         </div>
@@ -2320,9 +2640,12 @@
         { id: "partner-match", no: "3", title: "共创匹配", desc: "与运营方一起把需求变成预活动" }
       ],
       ops: [
-        { id: "ops-dashboard", no: "1", title: "需求面板", desc: "可视化看到本周关系需求和热度" },
-        { id: "ops-proposal", no: "2", title: "AI活动提案", desc: "系统基于人群和资源生成候选方案" },
-        { id: "ops-push", no: "3", title: "匹配与推送", desc: "先发预活动，资源匹配后再推给用户" }
+        { id: "ops-dashboard", no: "1", title: "需求总览", desc: "看见本周真实需求、分类占比和可行动主题" },
+        { id: "ops-tree", no: "2", title: "需求树", desc: "把用户原话聚类成可运营的主题结构" },
+        { id: "ops-resource", no: "3", title: "资源匹配", desc: "把需求连接到空间、商户、主理人和渠道" },
+        { id: "ops-proposal", no: "4", title: "AI提案生成", desc: "生成活动/内容/推送方案，交给人工确认" },
+        { id: "ops-preactivity", no: "5", title: "预活动共创", desc: "发布到需求广场，等待商户、主理人和用户响应" },
+        { id: "ops-push", no: "6", title: "正式触达", desc: "资源确认后发布活动；成熟活动可直接推送" }
       ]
     };
 
@@ -2412,25 +2735,46 @@
         human: "做最终共创会议和发布确认。"
       },
       "ops-dashboard": {
-        title: "运营方需要看到可视化需求，而不是零散聊天",
-        body: "面板要回答：这周最强需求是什么？有多少人？附近资源是否能回应？下一步该观察还是发起预活动？",
-        collect: ["需求热度", "人群标签分布", "资源可用性", "推送效果"],
-        ai: "把分散需求聚合成主题和优先级。",
-        human: "判断哪些值得进入试点。"
+        title: "运营方第一眼要看到：社区现在需要什么",
+        body: "工作台不是活动后台，而是需求雷达：把用户的原话、点击、评论和报名顾虑聚合成可行动的社区主题。",
+        collect: ["需求总量与分类占比", "高热原话", "增长趋势", "可进入验证的主题"],
+        ai: "把分散表达聚类成五类一级需求，并给出优先级。",
+        human: "判断哪些需求值得回应，哪些先观察。"
+      },
+      "ops-tree": {
+        title: "需求树让 AI 的理解过程变得可见",
+        body: "运营方不只看数字，还要看每一类需求下面具体是什么：想认识靠谱的人、想运动但坚持不了、想学习 AI、想参与有意义的事。",
+        collect: ["一级需求", "二级主题", "人数/热度", "典型原话"],
+        ai: "把相似表达合并成主题节点，并标注观察/需求卡/预活动。",
+        human: "调整主题命名，确认是否符合社区语境。"
+      },
+      "ops-resource": {
+        title: "资源匹配回答：创智天地已有资源怎么被激活",
+        body: "同一个需求可以调用商户、空间、路线、主理人和内容渠道。这里体现瑞安资源不是被动提供场地，而是成为社区场景的一部分。",
+        collect: ["可用空间", "商户能力", "主理人能力", "时间窗口", "资源匹配度"],
+        ai: "根据需求条件推荐资源组合和缺口。",
+        human: "确认合作可行性、预算和现场边界。"
       },
       "ops-proposal": {
-        title: "AI生成的是候选提案，不是直接发布",
-        body: "系统可以先生成活动类型、目标人群、场地建议、主理人建议和风险提示，再交给运营方确认。",
-        collect: ["活动框架", "资源匹配", "风险提示", "人工修改记录"],
-        ai: "生成候选活动方案和推送文案。",
-        human: "修改方案、控制语气、确认现场规则。"
+        title: "AI 生成的是可审核提案，而不是直接发布",
+        body: "系统把需求、资源和风险变成 2-3 个候选方案：活动形式、适合人群、资源清单、推送对象和人工确认事项。",
+        collect: ["目标需求", "候选方案", "资源清单", "风险提示", "人工修改记录"],
+        ai: "生成活动/内容/推送一体化提案。",
+        human: "选择方案、修改语气、确认现场规则。"
+      },
+      "ops-preactivity": {
+        title: "预活动不是正式发布，而是共创邀约",
+        body: "运营方觉得 AI 提案可行后，先把它作为预活动发到需求广场，@ 相关商户和主理人，也让用户表达是否愿意参加。",
+        collect: ["商户响应", "主理人响应", "用户想参加", "可用时间", "资源承诺"],
+        ai: "生成共创邀约、响应对象和待确认清单。",
+        human: "协调时间、费用、人数、安全边界和最终是否成局。"
       },
       "ops-push": {
-        title: "先预活动，再匹配资源，最后推给用户",
-        body: "推送不是第一步。先让主理人/商户响应预活动，方案成立后，再精准推送给合适用户。",
-        collect: ["预活动响应", "商户/主理人匹配状态", "用户触达名单"],
-        ai: "生成匹配路径和分层推送名单。",
-        human: "决定发布时间、推送对象和是否成局。"
+        title: "正式触达分两类：成熟活动直接推，新需求先共创",
+        body: "已经成熟的活动可以直接匹配用户推送；新生成的活动必须先完成资源确认，再进入正式发布和分层触达。",
+        collect: ["活动成熟度", "资源确认状态", "推送点击", "报名/收藏", "考虑原因"],
+        ai: "判断直接推送或进入预活动，并更新下一轮推荐优先级。",
+        human: "控制触达频率，决定发布与复盘。"
       }
     };
 
@@ -2457,50 +2801,39 @@
               <div class="wechat-card-foot">小程序 · AI 社区助手</div>
             </button>
           </div>
-          <div class="card" style="margin-top:18px;">
-            <h3>这条消息为什么发给他？</h3>
-            <p>因为他已完成画像，当前痛点是“想认识新人但怕尴尬”，并收藏过轻聊天/小人数活动。系统建议在下班前推送一次，不超过每日触达上限。</p>
-          </div>
         </div>
       `,
       "wechat-entry": `
-        <div class="card">
-          <h3>点击卡片后，不是统一进首页</h3>
-          <p>小程序根据推送内容和用户状态，决定第一落地点。这样用户会立刻看到“为什么是我、为什么现在、下一步能做什么”。</p>
-        </div>
+        <div class="push-source">来自企微消息 · 为你匹配了 3 个下一步</div>
         <div class="entry-route active">
-          <h3>活动推荐卡：直接进入活动详情</h3>
-          <p>适合已完成画像、已有明确匹配活动的用户。先看活动解决什么问题，再决定想参加或考虑。</p>
+          <h3>周五轻聊天晚餐局</h3>
+          <p>适合你当前“低压力认识新人”的需求。</p>
           <div class="route-line">
             <div class="route-node">企微活动卡<br>低压力晚餐局</div>
             <div class="arrow">→</div>
             <div class="route-node orange">活动详情页<br>匹配理由+报名</div>
           </div>
-          <button class="primary-btn" data-go="user-activity" style="margin-top:12px;width:100%;">模拟进入活动详情</button>
+          <button class="primary-btn" data-go="user-activity" style="margin-top:12px;width:100%;">看活动详情</button>
         </div>
         <div class="entry-route">
-          <h3>画像提醒卡：进入画像/展示页</h3>
-          <p>适合刚完成问答但还没完善资料的用户，引导他上传生活照、补充自我介绍和公开边界。</p>
+          <h3>完善你的社区主页</h3>
+          <p>上传生活照，补充你愿意公开的兴趣和边界。</p>
           <div class="route-line">
             <div class="route-node">企微提醒<br>完善你的社区主页</div>
             <div class="arrow">→</div>
             <div class="route-node orange">立体画像页<br>标签+展示编辑</div>
           </div>
-          <button class="ghost-btn" data-go="user-profile" style="margin-top:12px;width:100%;">模拟进入画像页</button>
+          <button class="ghost-btn" data-go="user-profile" style="margin-top:12px;width:100%;">查看画像</button>
         </div>
         <div class="entry-route">
-          <h3>需求讨论卡：进入社区需求卡</h3>
-          <p>适合活动还未成局时，先推一张真实需求卡，让用户共鸣、评论或补充自己的顾虑。</p>
+          <h3>同类需求正在成局</h3>
+          <p>看看和你一样有顾虑的人正在期待什么。</p>
           <div class="route-line">
             <div class="route-node">企微话题<br>你也怕尴尬吗</div>
             <div class="arrow">→</div>
             <div class="route-node orange">社区需求页<br>共鸣+评论+成局观察</div>
           </div>
-          <button class="ghost-btn" data-go="user-community" style="margin-top:12px;width:100%;">模拟进入需求页</button>
-        </div>
-        <div class="card">
-          <h3>数据回流</h3>
-          <p>点击、停留、收藏、考虑原因和评论，会回到运营面板，帮助判断下一次该推活动、推需求卡，还是暂时不打扰。</p>
+          <button class="ghost-btn" data-go="user-community" style="margin-top:12px;width:100%;">进入需求广场</button>
         </div>
       `,
       "user-register": `
@@ -2525,14 +2858,16 @@
         <div class="chat">
           <div class="bubble bot">用 3 个问题，建立你的社区需求画像。</div>
           <div class="voice-bar">按住说话：我最近最想改善的是…</div>
-          <div class="question-card">
+          <div class="question-card demand-card">
             <h3>1. 最近最需要什么？</h3>
             <p>可多选，用于判断当前优先级。</p>
             <div class="option-grid">
-              <button class="option active" data-toggle-option>认识新人但不尴尬</button>
-              <button class="option active" data-toggle-option>规律运动/体重管理</button>
-              <button class="option active" data-toggle-option>拓展生活半径</button>
-              <button class="option" data-toggle-option>找同频同行者</button>
+              <button class="option active" data-toggle-option>❤️ 认识靠谱的人</button>
+              <button class="option active" data-toggle-option>🌿 身体状态更好</button>
+              <button class="option" data-toggle-option>🚀 学习成长探索</button>
+              <button class="option active" data-toggle-option>☕ 生活更有趣</button>
+              <button class="option" data-toggle-option>✨ 参与有意义的事</button>
+              <button class="option" data-toggle-option>🐾 宠物/亲子友好</button>
             </div>
           </div>
           <div class="question-card">
@@ -2687,8 +3022,8 @@
         <div class="section-title">继续探索</div>
         <div class="home-search"><b>⌕</b><span>搜索关系活动、主理人、场景...</span></div>
         <div class="feature-tiles">
-          <div class="feature-tile"><b>需求广场</b><span>看看社区正在需要什么</span></div>
-          <div class="feature-tile small"><b>资源地图</b><span>商户、空间、主理人</span></div>
+          <div class="feature-tile"><b>需求广场</b><span>真实原话正在变成社区场景</span></div>
+          <div class="feature-tile small"><b>资源地图</b><span>商户、空间、主理人如何回应</span></div>
         </div>
         <div class="category-row">
           <span class="category-pill active">🔥 热门</span>
@@ -2709,7 +3044,7 @@
             <div class="chips"><span class="chip">低压力</span><span class="chip orange">主推</span></div>
           </div>
         </div>
-        <div class="event-card">
+        <div class="event-card warm">
           <div class="event-photo"><span>18人共鸣｜招募中</span></div>
           <div class="event-info">
             <div>
@@ -2755,26 +3090,33 @@
         </div>
       `,
       "user-community": `
-        <div class="card">
-          <h3>社区需求卡</h3>
-          <p>如果现在没有足够多活动，也可以先推真实需求和讨论，让用户参与“这件事要不要成局”。</p>
+        <div class="ops-hero">
+          <small>需求广场 · 社区互动</small>
+          <h3>低压力认识新人，可以怎么成局？</h3>
+          <p>来自 72 位用户的共鸣和评论，正在招募用户、商户和主理人响应。</p>
         </div>
         <div class="entry-route active">
-          <h3>和你一样的人，也怕第一次见面尴尬</h3>
-          <p>72人共鸣 · 38条评论 · 6位用户愿意参与预活动</p>
-          <div class="chips"><span class="chip">低压力</span><span class="chip orange">真实顾虑</span><span class="chip blue">可成局观察</span></div>
+          <h3>需求卡｜想认识靠谱的人，但不想尴尬交换微信</h3>
+          <p>72人共鸣 · 38条评论 · 6位用户愿意参加预活动</p>
+          <div class="chips"><span class="chip">用户可共鸣</span><span class="chip orange">商户可响应</span><span class="chip blue">主理人可发起</span></div>
           <div class="tag-explain">
-            <b>高频评论</b>
-            <p>“不是不想认识人，是不想一上来就被评价。” “如果流程清楚、人数少，我会更愿意去。”</p>
+            <b>精选评论</b>
+            <p>“我不是不想认识人，是不想一上来就被评价。如果流程清楚、人数少，我会更愿意去。”</p>
           </div>
           <div class="action-bar">
-            <button class="ghost-btn" data-toast="已记录你的共鸣">我也有这种顾虑</button>
-            <button class="primary-btn" data-go="user-activity">如果成局提醒我</button>
+            <button class="ghost-btn" data-toast="已记录你的共鸣，并打开留言框">我也有这个顾虑</button>
+            <button class="primary-btn" data-toast="活动落地后会提醒你">活动落地提醒我</button>
           </div>
         </div>
-        <div class="card">
-          <h3>AI如何处理</h3>
-          <p>系统会把评论里的真实表达整理成需求标签，再给运营方生成“是否发起预活动”的建议。</p>
+        <div class="proposal-card">
+          <h3>预活动招募中｜周五轻聊天晚餐局</h3>
+          <p>AI 已生成初版方案，正在等待商户和主理人确认时间、空间和承接方式。</p>
+          <div class="proposal-grid">
+            <div class="proposal-box"><b>用户</b>6/8 人已想参加</div>
+            <div class="proposal-box"><b>商户</b>1 家轻食商户待确认</div>
+            <div class="proposal-box"><b>主理人</b>1 位主持人待响应</div>
+            <div class="proposal-box"><b>状态</b>资源确认后正式发布</div>
+          </div>
         </div>
       `,
       "partner-home": `
@@ -2790,17 +3132,22 @@
         </div>
       `,
       "partner-needs": `
-        <div class="section-title">附近正在等待回应的需求</div>
-        <div class="card">
-          <h3>想认识新朋友，但不想一上来就被评价</h3>
-          <p>82°热度 · 72人共鸣 · 38条评论 · 适合低压力小组活动</p>
-          <div class="chips"><span class="chip">饭局</span><span class="chip">轻主持</span><span class="chip orange">可成局</span></div>
+        <div class="ops-hero">
+          <small>需求广场 · 资源方视角</small>
+          <h3>这些需求正在寻找商户和主理人响应</h3>
+          <p>响应后不会立即发布活动，需要运营方确认资源、时间和边界。</p>
+        </div>
+        <div class="entry-route active">
+          <h3>预活动｜周五轻聊天晚餐局</h3>
+          <p>需求来源：72人共鸣“想认识靠谱的人，但不想尴尬交换微信”。</p>
+          <div class="chips"><span class="chip">需要8人桌</span><span class="chip orange">轻餐茶饮</span><span class="chip blue">主持破冰</span></div>
           <button class="primary-btn" data-go="partner-match" style="margin-top:12px;width:100%;">我可以响应</button>
         </div>
-        <div class="card">
-          <h3>第一次见面，怎么自然打开话题？</h3>
-          <p>64°热度 · 主理人可设计破冰机制 · 商户可提供桌位。</p>
-          <button class="ghost-btn" data-toast="已收藏这个需求" style="margin-top:12px;width:100%;">先收藏</button>
+        <div class="entry-route">
+          <h3>预活动｜晨间散步 + 轻食补给</h3>
+          <p>需求来源：45人表达“想开始运动，但坚持不下来”。</p>
+          <div class="chips"><span class="chip">低糖轻食</span><span class="chip orange">路线集合</span><span class="chip blue">低强度</span></div>
+          <button class="ghost-btn" data-toast="已收藏这个预活动" style="margin-top:12px;width:100%;">先收藏</button>
         </div>
       `,
       "partner-match": `
@@ -2821,61 +3168,234 @@
         </div>
       `,
       "ops-dashboard": `
-        <div class="metric-grid">
-          <div class="metric"><b>126</b><span>本周新增需求</span></div>
-          <div class="metric"><b>82°</b><span>最高热度需求</span></div>
-          <div class="metric"><b>5</b><span>可用空间</span></div>
-          <div class="metric"><b>3</b><span>主理人响应</span></div>
+        <div class="ops-hero">
+          <small>AI 社区第二大脑 · 本周洞察</small>
+          <h3>社区需求正在从“关系连接”扩展到健康、成长和社会参与</h3>
+          <p>AI 已从问答、评论、收藏和活动反馈中识别 5 类一级需求，3 个主题建议进入成局验证。</p>
         </div>
-        <div class="bubble-chart">
-          <div class="need-bubble green" style="width:104px;height:104px;left:34px;top:35px;">低压力<br>认识新人</div>
-          <div class="need-bubble orange" style="width:82px;height:82px;left:162px;top:22px;">不尴尬<br>破冰</div>
-          <div class="need-bubble gold" style="width:70px;height:70px;left:258px;top:78px;">周末<br>同行</div>
-          <div class="need-bubble blue" style="width:58px;height:58px;left:128px;top:118px;">深聊</div>
+        <div class="ops-kpis">
+          <div class="ops-kpi"><b>186</b><span>新增需求表达</span></div>
+          <div class="ops-kpi"><b>5</b><span>一级需求分类</span></div>
+          <div class="ops-kpi"><b>3</b><span>可验证主题</span></div>
+          <div class="ops-kpi"><b>14</b><span>可匹配资源</span></div>
         </div>
-        <div class="card">
-          <h3>AI建议优先验证</h3>
-          <p>“低压力认识新人”已经同时具备人群热度、可用空间和主理人响应，建议生成预活动。</p>
-          <button class="primary-btn" data-go="ops-proposal" style="margin-top:12px;width:100%;">生成候选提案</button>
+        <div class="need-list">
+          <div class="need-row">
+            <div class="need-row-head"><b>关系连接</b><span>34% · 63人</span></div>
+            <div class="need-bar"><i style="width:34%"></i></div>
+            <div class="chips"><span class="chip">靠谱的人</span><span class="chip orange">不尴尬</span><span class="chip blue">长期社群</span></div>
+          </div>
+          <div class="need-row">
+            <div class="need-row-head"><b>健康生活</b><span>24% · 45人</span></div>
+            <div class="need-bar"><i style="width:24%"></i></div>
+            <div class="chips"><span class="chip">想运动</span><span class="chip orange">体脂焦虑</span><span class="chip blue">放松减压</span></div>
+          </div>
+          <div class="need-row">
+            <div class="need-row-head"><b>成长探索</b><span>17% · 32人</span></div>
+            <div class="need-bar"><i style="width:17%"></i></div>
+            <div class="chips"><span class="chip">学习AI</span><span class="chip orange">行业交流</span><span class="chip blue">副业伙伴</span></div>
+          </div>
+          <div class="need-row">
+            <div class="need-row-head"><b>日常陪伴 / 社会参与</b><span>25% · 46人</span></div>
+            <div class="need-bar"><i style="width:25%"></i></div>
+            <div class="chips"><span class="chip">城市散步</span><span class="chip orange">组织活动</span><span class="chip blue">社区共创</span></div>
+          </div>
         </div>
+        <div class="quote-card">
+          <p>“我想加入一个可以长期待下去的小社群，而不是参加一次活动就结束。”</p>
+          <span>AI 判断：关系连接 + 长期社群 · 建议进入需求树</span>
+        </div>
+        <button class="primary-btn" data-go="ops-tree" style="width:100%;">查看 AI 需求树</button>
+      `,
+      "ops-tree": `
+        <div class="ops-hero">
+          <small>需求共知</small>
+          <h3>AI 把零散原话聚类成可运营主题</h3>
+          <p>每个节点都保留真实表达、人数、趋势和下一步建议。</p>
+        </div>
+        <div class="need-tree">
+          <div class="tree-branch">
+            <h3>❤️ 关系连接 <span>63人 · +18%</span></h3>
+            <div class="tree-items">
+              <div class="tree-item">想认识真诚靠谱的人，而不是尴尬交换微信 <em>32人</em></div>
+              <div class="tree-item">想找对象，但不喜欢强目的氛围 <em>18人</em></div>
+              <div class="tree-item">想加入可以长期待下去的小社群 <em>13人</em></div>
+            </div>
+          </div>
+          <div class="tree-branch">
+            <h3>🌿 健康生活 <span>45人 · +24%</span></h3>
+            <div class="tree-items">
+              <div class="tree-item">体脂有点高，想开始运动但坚持不了 <em>21人</em></div>
+              <div class="tree-item">加班太多，想找点方式放松一下 <em>15人</em></div>
+              <div class="tree-item">想让周末不要一直宅在家里 <em>9人</em></div>
+            </div>
+          </div>
+          <div class="tree-branch">
+            <h3>🚀 成长探索 <span>32人 · +12%</span></h3>
+            <div class="tree-items">
+              <div class="tree-item">想学习 AI，但不知道从哪里开始 <em>16人</em></div>
+              <div class="tree-item">想认识同行，一起交流行业经验 <em>10人</em></div>
+              <div class="tree-item">想参与公益或社会创新项目 <em>6人</em></div>
+            </div>
+          </div>
+          <div class="tree-branch">
+            <h3>✨ 社会参与 <span>21人 · 新增</span></h3>
+            <div class="tree-items">
+              <div class="tree-item">想分享自己的技能，而不仅仅是参加活动 <em>8人</em></div>
+              <div class="tree-item">想组织一次属于自己的活动 <em>7人</em></div>
+              <div class="tree-item">想参与社区建设，而不仅仅是旁观 <em>6人</em></div>
+            </div>
+          </div>
+        </div>
+        <div class="quote-card">
+          <p>AI 建议：优先验证“低压力认识新人 + 健康生活”复合主题，因为它同时具备用户热度、商户资源和主理人响应。</p>
+          <span>下一步：匹配空间 / 商户 / 主理人</span>
+        </div>
+        <button class="primary-btn" data-go="ops-resource" style="width:100%;">进入资源匹配</button>
+      `,
+      "ops-resource": `
+        <div class="ops-hero">
+          <small>资源匹配</small>
+          <h3>把创智天地已有资源转成可回应需求的场景</h3>
+          <p>AI 根据人群、时间、距离、承接能力和风险边界推荐资源组合。</p>
+        </div>
+        <div class="resource-map">
+          <div class="resource-card">
+            <div class="resource-icon">店</div>
+            <div><b>KIC 咖啡 / 轻食商户</b><span>周五晚可提供 8 人桌；可做低糖轻食套餐</span></div>
+            <div class="match-score">92%</div>
+          </div>
+          <div class="resource-card">
+            <div class="resource-icon">路</div>
+            <div><b>大学路 - 创智天地散步路线</b><span>适合低强度运动；可作为饭后轻社交延伸</span></div>
+            <div class="match-score">88%</div>
+          </div>
+          <div class="resource-card">
+            <div class="resource-icon">主</div>
+            <div><b>恰好 / 社区主理人</b><span>擅长低压力破冰、关系边界设计和现场主持</span></div>
+            <div class="match-score">95%</div>
+          </div>
+          <div class="resource-card">
+            <div class="resource-icon">群</div>
+            <div><b>企微 + 小程序触达</b><span>可分层推给 34 位高匹配用户，收集考虑原因</span></div>
+            <div class="match-score">90%</div>
+          </div>
+        </div>
+        <div class="proposal-card">
+          <h3>AI 资源判断</h3>
+          <p>资源足以支撑 2 个预活动：周五轻聊天晚餐局、周六晨间散步 + 轻食补给。建议先生成提案，由运营方确认。</p>
+        </div>
+        <button class="primary-btn" data-go="ops-proposal" style="width:100%;">生成 AI 提案</button>
       `,
       "ops-proposal": `
-        <div class="card">
-          <h3>AI生成的候选活动</h3>
-          <p>周五轻聊天晚餐局：6-8人，KIC附近，轻主持，不强配对。</p>
-          <div class="chips"><span class="chip">目标用户34人</span><span class="chip orange">空间可用</span><span class="chip blue">需人工确认</span></div>
+        <div class="ops-hero">
+          <small>AI Proposal Generator</small>
+          <h3>基于需求树和资源库，生成 3 个可审核提案</h3>
+          <p>AI 负责生成，运营方负责选择、修改和确认边界。</p>
         </div>
-        <div class="card">
-          <h3>方案结构</h3>
-          <div class="timeline">
-            <div class="timeline-item"><span class="dot">1</span><span>先生成预活动，给主理人/商户确认资源。</span></div>
-            <div class="timeline-item"><span class="dot">2</span><span>资源成立后，生成用户端活动详情。</span></div>
-            <div class="timeline-item"><span class="dot">3</span><span>按画像推送给低压力社交需求用户。</span></div>
+        <div class="proposal-card">
+          <h3>提案 A｜周五轻聊天晚餐局</h3>
+          <p>回应：想认识靠谱的人 / 不想尴尬交换微信 / 下班后需要期待感。</p>
+          <div class="proposal-grid">
+            <div class="proposal-box"><b>目标人群</b>低压力社交需求用户 34 人</div>
+            <div class="proposal-box"><b>资源组合</b>咖啡轻食商户 + 恰好主理人</div>
+            <div class="proposal-box"><b>推送策略</b>周四 17:30 企微卡片触达</div>
+            <div class="proposal-box"><b>人工确认</b>人数上限、费用、边界说明</div>
           </div>
-          <button class="orange-btn" data-go="ops-push" style="margin-top:14px;width:100%;">进入匹配与推送</button>
         </div>
+        <div class="proposal-card">
+          <h3>提案 B｜晨间散步 + 轻食补给</h3>
+          <p>回应：体脂焦虑 / 想运动但坚持不了 / 周末不想宅在家。</p>
+          <div class="proposal-grid">
+            <div class="proposal-box"><b>目标人群</b>健康生活需求用户 28 人</div>
+            <div class="proposal-box"><b>资源组合</b>散步路线 + 低糖轻食套餐</div>
+            <div class="proposal-box"><b>推送策略</b>周五午间推送，降低准备成本</div>
+            <div class="proposal-box"><b>风险提示</b>标注运动强度，避免过度承诺</div>
+          </div>
+        </div>
+        <div class="proposal-card">
+          <h3>提案 C｜AI 入门共学桌</h3>
+          <p>回应：想学习 AI / 想认识同行 / 想让生活有成长感。</p>
+          <div class="proposal-grid">
+            <div class="proposal-box"><b>目标人群</b>成长探索需求用户 16 人</div>
+            <div class="proposal-box"><b>资源组合</b>共享空间 + 技术志愿者</div>
+            <div class="proposal-box"><b>推送策略</b>先发需求卡，观察报名意愿</div>
+            <div class="proposal-box"><b>人工确认</b>课程边界与主理人能力</div>
+          </div>
+        </div>
+        <button class="orange-btn" data-go="ops-preactivity" style="width:100%;">发布为预活动，邀请资源方响应</button>
+      `,
+      "ops-preactivity": `
+        <div class="ops-hero">
+          <small>预活动共创</small>
+          <h3>AI 提案先进入需求广场，等待三方确认</h3>
+          <p>这一步不是正式发布，而是把需求、方案和资源缺口公开给相关角色响应。</p>
+        </div>
+        <div class="proposal-card">
+          <h3>预活动｜周五轻聊天晚餐局</h3>
+          <p>@KIC轻食商户 @恰好主理人：是否可以承接 8 人桌、轻餐茶饮和低压力破冰主持？</p>
+          <div class="proposal-grid">
+            <div class="proposal-box"><b>用户响应</b>6/8 人点击“想参加”</div>
+            <div class="proposal-box"><b>商户响应</b>待确认周五 19:00 桌位</div>
+            <div class="proposal-box"><b>主理人响应</b>待确认主持流程</div>
+            <div class="proposal-box"><b>运营确认</b>费用、边界、退款规则</div>
+          </div>
+        </div>
+        <div class="proposal-card">
+          <h3>预活动｜晨间散步 + 轻食补给</h3>
+          <p>@轻食商户 @散步主理人：是否可以提供低糖早餐补给和低强度路线陪走？</p>
+          <div class="proposal-grid">
+            <div class="proposal-box"><b>用户响应</b>12 人点击“落地提醒我”</div>
+            <div class="proposal-box"><b>商户响应</b>可提供 20 份轻食包</div>
+            <div class="proposal-box"><b>主理人响应</b>缺少路线带领者</div>
+            <div class="proposal-box"><b>状态</b>继续招募主理人</div>
+          </div>
+        </div>
+        <div class="quote-card">
+          <p>AI 待办：如果周五轻聊天晚餐局完成商户和主理人确认，自动生成正式活动详情与分层推送名单。</p>
+          <span>人工确认后进入正式触达</span>
+        </div>
+        <button class="primary-btn" data-go="ops-push" style="width:100%;">查看正式触达策略</button>
       `,
       "ops-push": `
-        <div class="card">
-          <h3>活动生成链路</h3>
-          <div class="match-row">
-            <div class="mini-box"><b>预活动</b>低压力轻聊天晚餐局</div>
-            <div class="arrow">→</div>
-            <div class="mini-box"><b>资源响应</b>1家商户 + 1位主理人</div>
-          </div>
-          <div class="match-row">
-            <div class="mini-box"><b>人工确认</b>人数、边界、流程、安全说明</div>
-            <div class="arrow">→</div>
-            <div class="mini-box"><b>用户推送</b>34位高匹配用户优先</div>
+        <div class="ops-hero">
+          <small>正式触达策略</small>
+          <h3>成熟活动直接推送，新需求成局后再推送</h3>
+          <p>AI 会判断活动成熟度，避免把还没确认资源的提案直接推给用户。</p>
+        </div>
+        <div class="proposal-card">
+          <h3>路径 A｜成熟活动直接推送</h3>
+          <div class="timeline">
+            <div class="timeline-item"><span class="dot">1</span><span>已有活动：主理人、时间、地点、费用均已确认。</span></div>
+            <div class="timeline-item"><span class="dot">2</span><span>AI 匹配用户画像，生成分层推送名单。</span></div>
+            <div class="timeline-item"><span class="dot">3</span><span>用户点击后直接进入活动详情和报名页。</span></div>
           </div>
         </div>
-        <div class="card">
-          <h3>推送草稿</h3>
-          <p>你关注的“下班后轻松认识新朋友”正在成局。本周五19:30，一场低压力轻聊天晚餐局开放报名。</p>
-          <div class="action-bar">
-            <button class="ghost-btn" data-toast="已保存草稿">保存草稿</button>
-            <button class="orange-btn" data-toast="已进入待推送队列">确认推送</button>
+        <div class="proposal-card">
+          <h3>路径 B｜新需求先预活动共创</h3>
+          <div class="timeline">
+            <div class="timeline-item"><span class="dot">1</span><span>AI 识别新需求，生成预活动提案。</span></div>
+            <div class="timeline-item"><span class="dot">2</span><span>发布到需求广场，等待用户、商户、主理人响应。</span></div>
+            <div class="timeline-item"><span class="dot">3</span><span>资源确认后转为正式活动，再推送给高匹配用户。</span></div>
           </div>
+        </div>
+        <div class="quote-card">
+          <p>推送文案草稿：你最近提到“想认识靠谱的人，但不想尴尬交换微信”。本周五有一场 6-8 人轻聊天晚餐局，适合先从低压力场景开始。</p>
+          <span>AI 生成 · 需人工确认语气和边界</span>
+        </div>
+        <div class="need-list">
+          <div class="need-row">
+            <div class="need-row-head"><b>预计反馈</b><span>报名 12 / 收藏 18 / 考虑 9</span></div>
+            <div class="need-bar"><i style="width:68%"></i></div>
+          </div>
+          <div class="need-row">
+            <div class="need-row-head"><b>回流学习</b><span>顾虑：时间、尴尬、人群是否同频</span></div>
+            <div class="need-bar"><i style="width:54%"></i></div>
+          </div>
+        </div>
+        <div class="action-bar">
+          <button class="ghost-btn" data-toast="已保存为待审核">保存草稿</button>
+          <button class="orange-btn" data-toast="已进入待推送队列">确认推送</button>
         </div>
       `
     };
@@ -2894,6 +3414,7 @@
     const mobileFlowEl = document.getElementById("mobileFlow");
     const screenEl = document.getElementById("screen");
     const titleEl = document.getElementById("phoneTitle");
+    const phoneShell = document.querySelector(".phone-shell");
     const roleButtons = document.querySelectorAll("[data-role]");
     const insightTitle = document.getElementById("insightTitle");
     const insightBody = document.getElementById("insightBody");
@@ -2926,6 +3447,7 @@
     function render(view) {
       currentView = view;
       currentRole = roleFromView(view);
+      phoneShell.classList.toggle("workbench-mode", currentRole !== "user");
       roleButtons.forEach(btn => btn.classList.toggle("active", btn.dataset.role === currentRole));
       renderSteps();
       screenEl.innerHTML = views[view];
