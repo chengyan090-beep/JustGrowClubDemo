@@ -1,0 +1,3505 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>创智天地 AI 社区第二大脑 Demo</title>
+  <style>
+    :root {
+      --bg: #efe8da;
+      --panel: rgba(255, 250, 240, .82);
+      --paper: #fffaf0;
+      --screen: #f5efe6;
+      --ink: #20312a;
+      --muted: #737e76;
+      --line: #ded3c4;
+      --green: #0f5b42;
+      --green-2: #3a8066;
+      --mint: #e8f4ed;
+      --orange: #ec7a3a;
+      --orange-soft: #fde7d5;
+      --gold: #d5a64d;
+      --blue: #e5f1f4;
+      --shadow: 0 24px 70px rgba(62, 49, 30, .18);
+      color-scheme: light;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 18% 10%, rgba(236, 122, 58, .13), transparent 25%),
+        radial-gradient(circle at 88% 84%, rgba(15, 91, 66, .16), transparent 30%),
+        var(--bg);
+    }
+
+    button { font: inherit; }
+
+    .workspace {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 330px minmax(390px, 430px) minmax(350px, 430px);
+      gap: 30px;
+      align-items: center;
+      padding: 30px;
+    }
+
+    .left, .right {
+      align-self: stretch;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 16px;
+    }
+
+    .kicker {
+      color: var(--orange);
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: .04em;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 32px;
+      line-height: 1.18;
+      letter-spacing: 0;
+    }
+
+    .intro {
+      margin: 0;
+      color: var(--muted);
+      font-size: 15px;
+      line-height: 1.75;
+    }
+
+    .role-tabs {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      padding: 6px;
+      border-radius: 18px;
+      background: rgba(255, 250, 240, .64);
+      border: 1px solid rgba(15, 91, 66, .14);
+    }
+
+    .role-tabs button,
+    .step {
+      border: 0;
+      cursor: pointer;
+    }
+
+    .role-tabs button {
+      min-height: 42px;
+      border-radius: 14px;
+      background: transparent;
+      color: var(--muted);
+      font-weight: 800;
+      font-size: 13px;
+    }
+
+    .role-tabs button.active {
+      background: var(--green);
+      color: #fffaf0;
+      box-shadow: 0 10px 24px rgba(15, 91, 66, .18);
+    }
+
+    .steps {
+      display: grid;
+      gap: 9px;
+    }
+
+    .mobile-flow {
+      display: none;
+    }
+
+    .mobile-roles {
+      display: none;
+    }
+
+    .step {
+      width: 100%;
+      min-height: 70px;
+      border-radius: 18px;
+      padding: 13px 14px;
+      text-align: left;
+      background: var(--panel);
+      border: 1px solid rgba(15, 91, 66, .12);
+      color: var(--ink);
+      display: grid;
+      grid-template-columns: 34px 1fr;
+      gap: 11px;
+      align-items: center;
+      transition: transform .18s ease, border-color .18s ease, background .18s ease;
+    }
+
+    .step:hover { transform: translateY(-1px); }
+
+    .step.active {
+      background: var(--green);
+      color: #fffaf0;
+      border-color: var(--green);
+      box-shadow: 0 14px 28px rgba(15, 91, 66, .18);
+    }
+
+    .step-num {
+      width: 32px;
+      height: 32px;
+      border-radius: 13px;
+      display: grid;
+      place-items: center;
+      background: var(--mint);
+      color: var(--green);
+      font-weight: 900;
+      font-size: 13px;
+    }
+
+    .step.active .step-num {
+      background: rgba(255,255,255,.18);
+      color: #fffaf0;
+    }
+
+    .step b {
+      display: block;
+      font-size: 14px;
+      margin-bottom: 3px;
+    }
+
+    .step span {
+      display: block;
+      font-size: 12px;
+      line-height: 1.35;
+      color: var(--muted);
+    }
+
+    .step.active span { color: rgba(255,250,240,.76); }
+
+    .phone-shell {
+      width: 390px;
+      height: 844px;
+      border-radius: 48px;
+      border: 10px solid #1b1b1b;
+      overflow: hidden;
+      background: var(--screen);
+      box-shadow: var(--shadow);
+      position: relative;
+      margin: auto;
+    }
+
+    .phone-shell::before {
+      content: "";
+      position: absolute;
+      z-index: 30;
+      top: 0;
+      left: 50%;
+      width: 122px;
+      height: 28px;
+      transform: translateX(-50%);
+      background: #1b1b1b;
+      border-radius: 0 0 18px 18px;
+    }
+
+    .phone-status {
+      height: 46px;
+      padding: 13px 22px 0;
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      background: rgba(255,255,255,.9);
+      font-weight: 800;
+      color: #111;
+      font-size: 15px;
+    }
+
+    .signals {
+      display: flex;
+      gap: 6px;
+      align-items: center;
+      font-size: 12px;
+    }
+
+    .bars {
+      width: 18px;
+      height: 13px;
+      display: inline-grid;
+      grid-template-columns: repeat(4, 3px);
+      align-items: end;
+      gap: 2px;
+    }
+
+    .bars i {
+      display: block;
+      width: 3px;
+      border-radius: 2px;
+      background: currentColor;
+    }
+
+    .bars i:nth-child(1) { height: 4px; }
+    .bars i:nth-child(2) { height: 7px; }
+    .bars i:nth-child(3) { height: 10px; }
+    .bars i:nth-child(4) { height: 13px; }
+
+    .battery {
+      width: 24px;
+      height: 13px;
+      border: 2px solid currentColor;
+      border-radius: 5px;
+      position: relative;
+    }
+
+    .battery::before {
+      content: "";
+      position: absolute;
+      left: 2px;
+      top: 1px;
+      width: 14px;
+      height: 7px;
+      border-radius: 2px;
+      background: #62bd62;
+    }
+
+    .battery::after {
+      content: "";
+      position: absolute;
+      right: -5px;
+      top: 2px;
+      width: 2px;
+      height: 6px;
+      border-radius: 0 2px 2px 0;
+      background: currentColor;
+    }
+
+    .phone-nav {
+      height: 54px;
+      background: rgba(255,255,255,.94);
+      border-bottom: 1px solid var(--line);
+      display: grid;
+      grid-template-columns: 46px 1fr 46px;
+      align-items: center;
+      padding: 0 12px;
+    }
+
+    .icon-btn {
+      border: 0;
+      background: transparent;
+      width: 36px;
+      height: 36px;
+      border-radius: 999px;
+      cursor: pointer;
+      display: grid;
+      place-items: center;
+      color: inherit;
+      font-size: 20px;
+    }
+
+    .nav-title {
+      text-align: center;
+      font-size: 18px;
+      font-weight: 900;
+      line-height: 1.1;
+    }
+
+    .nav-title small {
+      display: block;
+      margin-top: 3px;
+      font-size: 10px;
+      color: var(--muted);
+      font-weight: 600;
+    }
+
+    .phone-body {
+      height: calc(100% - 46px - 54px - 70px);
+      overflow: hidden;
+      position: relative;
+      background: #f4eee5;
+    }
+
+    .scroll {
+      height: 100%;
+      overflow-y: auto;
+      overflow-x: hidden;
+      padding: 14px 14px 22px;
+    }
+
+    .scroll::-webkit-scrollbar { width: 0; height: 0; }
+
+    .bottom-tabs {
+      height: 70px;
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      background: rgba(255,255,255,.96);
+      border-top: 1px solid var(--line);
+      padding-bottom: 9px;
+    }
+
+    .tab {
+      border: 0;
+      background: transparent;
+      color: #9ba49e;
+      display: grid;
+      justify-items: center;
+      align-content: center;
+      gap: 2px;
+      font-size: 11px;
+      cursor: pointer;
+    }
+
+    .tab b { font-size: 19px; line-height: 1; }
+    .tab.active { color: var(--green); font-weight: 900; }
+
+    .wechat-view {
+      min-height: 100%;
+      background: #ededed;
+      margin: -14px;
+      padding: 14px 14px 24px;
+    }
+
+    .wechat-time {
+      text-align: center;
+      color: #aaa;
+      font-size: 12px;
+      margin: 8px 0 18px;
+    }
+
+    .wechat-row {
+      display: grid;
+      grid-template-columns: 40px 1fr;
+      gap: 10px;
+      align-items: start;
+      margin-bottom: 12px;
+    }
+
+    .wechat-avatar {
+      width: 38px;
+      height: 38px;
+      border-radius: 11px;
+      background:
+        radial-gradient(circle at 60% 35%, #f7c768 0 18%, transparent 19%),
+        linear-gradient(135deg, var(--green), var(--orange));
+      box-shadow: inset 0 0 0 3px rgba(255,255,255,.58);
+    }
+
+    .wechat-bubble {
+      background: #fff;
+      border-radius: 8px;
+      padding: 13px 14px;
+      font-size: 15px;
+      line-height: 1.55;
+      color: #242424;
+      position: relative;
+      box-shadow: 0 1px 2px rgba(0,0,0,.03);
+    }
+
+    .wechat-bubble::before {
+      content: "";
+      position: absolute;
+      left: -6px;
+      top: 14px;
+      width: 0;
+      height: 0;
+      border-top: 6px solid transparent;
+      border-bottom: 6px solid transparent;
+      border-right: 7px solid #fff;
+    }
+
+    .wechat-card {
+      overflow: hidden;
+      padding: 0;
+      cursor: pointer;
+    }
+
+    .wechat-card-cover {
+      min-height: 146px;
+      padding: 18px;
+      background:
+        linear-gradient(140deg, rgba(15, 91, 66, .92), rgba(236, 122, 58, .9)),
+        radial-gradient(circle at 72% 22%, rgba(255,250,240,.7), transparent 22%);
+      color: #fffaf0;
+      display: grid;
+      align-content: end;
+    }
+
+    .wechat-card-cover b {
+      font-size: 20px;
+      line-height: 1.25;
+      display: block;
+      margin-bottom: 8px;
+    }
+
+    .wechat-card-cover span {
+      font-size: 12px;
+      color: rgba(255,250,240,.84);
+    }
+
+    .wechat-card-foot {
+      height: 38px;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      padding: 0 12px;
+      color: #8b8b8b;
+      font-size: 12px;
+      background: #fff;
+    }
+
+    .wechat-link {
+      color: #526b9a;
+      font-weight: 800;
+    }
+
+    .entry-route {
+      border-radius: 22px;
+      background: #fff;
+      border: 1px solid rgba(15,91,66,.08);
+      padding: 15px;
+      margin-bottom: 12px;
+      box-shadow: 0 10px 22px rgba(49,42,32,.06);
+    }
+
+    .entry-route.active {
+      border-color: rgba(236,122,58,.5);
+      background: linear-gradient(180deg, #fff, #fff8ee);
+    }
+
+    .entry-route h3 {
+      margin: 0;
+      font-size: 15px;
+      line-height: 1.35;
+    }
+
+    .entry-route p {
+      margin: 6px 0 0;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.55;
+    }
+
+    .route-line {
+      display: grid;
+      grid-template-columns: 1fr 22px 1fr;
+      gap: 7px;
+      align-items: stretch;
+      margin-top: 12px;
+    }
+
+    .route-node {
+      border-radius: 14px;
+      background: var(--mint);
+      color: var(--green);
+      padding: 10px;
+      font-size: 11px;
+      line-height: 1.45;
+      font-weight: 800;
+    }
+
+    .route-node.orange {
+      background: var(--orange-soft);
+      color: var(--orange);
+    }
+
+    .push-source {
+      border-radius: 16px;
+      background: #fff8ed;
+      border: 1px solid rgba(236,122,58,.22);
+      color: #9a542b;
+      padding: 11px 13px;
+      font-size: 12px;
+      line-height: 1.45;
+      font-weight: 800;
+      margin-bottom: 10px;
+    }
+
+    .hero {
+      min-height: 186px;
+      border-radius: 24px;
+      padding: 22px;
+      background:
+        radial-gradient(circle at 82% 18%, rgba(245, 203, 94, .95), transparent 18%),
+        linear-gradient(140deg, #0f5b42, #2c8063 68%, #efbd54);
+      color: #fffaf0;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 16px 36px rgba(15, 91, 66, .18);
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      right: -46px;
+      bottom: -70px;
+      width: 180px;
+      height: 180px;
+      border-radius: 50%;
+      background: rgba(255,255,255,.16);
+    }
+
+    .hero h2 {
+      margin: 0;
+      font-size: 23px;
+      line-height: 1.2;
+      letter-spacing: 0;
+    }
+
+    .hero p {
+      width: 245px;
+      margin: 10px 0 0;
+      color: rgba(255,250,240,.84);
+      line-height: 1.55;
+      font-size: 12px;
+    }
+
+    .primary-btn, .ghost-btn, .orange-btn {
+      border: 0;
+      min-height: 42px;
+      border-radius: 999px;
+      padding: 0 16px;
+      font-weight: 900;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+    .primary-btn { background: var(--green); color: #fffaf0; }
+    .orange-btn { background: var(--orange); color: #fffaf0; }
+    .ghost-btn { background: var(--mint); color: var(--green); }
+
+    .hero .primary-btn, .hero .ghost-btn {
+      margin-top: 20px;
+      background: #fffaf0;
+      color: var(--green);
+    }
+
+    .card {
+      background: #fff;
+      border: 1px solid rgba(15, 91, 66, .09);
+      border-radius: 20px;
+      padding: 16px;
+      box-shadow: 0 10px 24px rgba(49, 42, 32, .06);
+      margin-bottom: 12px;
+    }
+
+    .card h3 {
+      margin: 0;
+      font-size: 16px;
+      line-height: 1.35;
+    }
+
+    .card p {
+      margin: 6px 0 0;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.55;
+    }
+
+    .chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 11px;
+    }
+
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      min-height: 26px;
+      padding: 0 9px;
+      border-radius: 999px;
+      background: var(--mint);
+      color: var(--green);
+      font-size: 11px;
+      font-weight: 900;
+    }
+
+    .chip.orange { background: var(--orange-soft); color: var(--orange); }
+    .chip.blue { background: var(--blue); color: #2e6c78; }
+
+    .form-row {
+      display: grid;
+      gap: 8px;
+      margin-top: 14px;
+    }
+
+    .input-like {
+      background: #f7f1e7;
+      border: 1px solid #eadfce;
+      color: var(--muted);
+      border-radius: 14px;
+      min-height: 44px;
+      padding: 12px;
+      font-size: 13px;
+      line-height: 1.4;
+    }
+
+    .option-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    .option {
+      border: 1px solid #e7ddcf;
+      background: #fffaf4;
+      border-radius: 14px;
+      padding: 10px 9px;
+      text-align: left;
+      color: var(--ink);
+      cursor: pointer;
+      font-size: 11px;
+      line-height: 1.4;
+    }
+
+    .demand-card .option-grid {
+      grid-template-columns: 1fr;
+      gap: 7px;
+    }
+
+    .option.active, .option:hover {
+      border-color: var(--green);
+      background: var(--mint);
+      color: var(--green);
+      font-weight: 800;
+    }
+
+    .chat {
+      display: grid;
+      gap: 12px;
+    }
+
+    .bubble {
+      max-width: 86%;
+      border-radius: 18px;
+      padding: 12px 14px;
+      font-size: 13px;
+      line-height: 1.55;
+    }
+
+    .bubble.bot {
+      background: #fff;
+      border-top-left-radius: 6px;
+      box-shadow: 0 8px 18px rgba(0,0,0,.05);
+    }
+
+    .bubble.user {
+      justify-self: end;
+      background: var(--green);
+      color: #fffaf0;
+      border-top-right-radius: 6px;
+    }
+
+    .profile-score {
+      display: grid;
+      grid-template-columns: 118px 1fr;
+      gap: 13px;
+      align-items: center;
+      margin-top: 14px;
+    }
+
+    .radial {
+      width: 112px;
+      height: 112px;
+      border-radius: 50%;
+      background: conic-gradient(var(--green) 0 72%, var(--orange) 72% 86%, #eadfce 86% 100%);
+      display: grid;
+      place-items: center;
+      color: var(--green);
+      font-weight: 900;
+      position: relative;
+    }
+
+    .radial::after {
+      content: "";
+      position: absolute;
+      inset: 12px;
+      border-radius: 50%;
+      background: #fff;
+    }
+
+    .radial span {
+      position: relative;
+      z-index: 1;
+      font-size: 24px;
+    }
+
+    .voice-bar {
+      margin-top: 12px;
+      min-height: 46px;
+      border-radius: 999px;
+      background: var(--green);
+      color: #fffaf0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      font-weight: 900;
+      font-size: 13px;
+    }
+
+    .question-card {
+      background: #fff;
+      border-radius: 20px;
+      padding: 15px;
+      margin-bottom: 12px;
+      box-shadow: 0 10px 24px rgba(49, 42, 32, .06);
+    }
+
+    .question-card h3 {
+      margin: 0 0 4px;
+      font-size: 15px;
+    }
+
+    .question-card p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    .photo-map {
+      position: relative;
+      height: 252px;
+      border-radius: 24px;
+      background:
+        radial-gradient(circle at 20% 12%, rgba(236, 122, 58, .12), transparent 22%),
+        radial-gradient(circle at 84% 82%, rgba(15, 91, 66, .12), transparent 24%),
+        #fff;
+      border: 1px solid #eadfce;
+      overflow: hidden;
+      margin-bottom: 12px;
+    }
+
+    .photo-node {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      width: 118px;
+      height: 118px;
+      transform: translate(-50%, -50%);
+      border-radius: 32px;
+      background:
+        linear-gradient(145deg, rgba(15,91,66,.16), rgba(236,122,58,.14)),
+        #f7f1e7;
+      border: 4px solid #fff;
+      box-shadow: 0 16px 34px rgba(15, 91, 66, .18);
+      display: grid;
+      place-items: center;
+      text-align: center;
+      color: var(--green);
+      font-weight: 900;
+      line-height: 1.35;
+    }
+
+    .photo-node.has-photo {
+      background:
+        linear-gradient(180deg, rgba(255,255,255,.04), rgba(15,91,66,.22)),
+        url("assets/xiaoc-avatar.png") center 18% / 76% auto no-repeat,
+        #f4eadf;
+      color: #fffaf0;
+      text-shadow: 0 2px 10px rgba(0,0,0,.2);
+    }
+
+    .upload-strip {
+      display: grid;
+      grid-template-columns: 74px 1fr;
+      gap: 12px;
+      align-items: center;
+      margin-top: 12px;
+      padding: 12px;
+      border-radius: 18px;
+      background: #fff;
+      border: 1px solid #eadfce;
+    }
+
+    .upload-preview {
+      width: 74px;
+      height: 74px;
+      border-radius: 22px;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,.04), rgba(15,91,66,.22)),
+        url("assets/xiaoc-avatar.png") center 18% / 86% auto no-repeat,
+        #f4eadf;
+      box-shadow: 0 12px 22px rgba(49,42,32,.12);
+    }
+
+    .upload-strip h3 {
+      margin: 0;
+      font-size: 15px;
+    }
+
+    .upload-strip p {
+      margin: 4px 0 10px;
+      color: var(--muted);
+      font-size: 11px;
+      line-height: 1.45;
+    }
+
+    .tag-explain {
+      border-radius: 16px;
+      padding: 12px;
+      background: #f8f2e8;
+      border: 1px solid #eadfce;
+      margin-top: 10px;
+    }
+
+    .tag-explain b {
+      display: block;
+      font-size: 13px;
+      margin-bottom: 4px;
+    }
+
+    .photo-node small {
+      display: block;
+      margin-top: 4px;
+      color: var(--muted);
+      font-size: 10px;
+      font-weight: 700;
+    }
+
+    .trait {
+      position: absolute;
+      min-height: 34px;
+      border-radius: 999px;
+      background: var(--mint);
+      color: var(--green);
+      display: inline-flex;
+      align-items: center;
+      padding: 0 11px;
+      font-size: 11px;
+      font-weight: 900;
+      box-shadow: 0 8px 18px rgba(15,91,66,.08);
+      white-space: nowrap;
+    }
+
+    .trait.orange { background: var(--orange-soft); color: var(--orange); }
+    .trait.blue { background: var(--blue); color: #2e6c78; }
+
+    .showcase-head {
+      min-height: 220px;
+      border-radius: 24px;
+      padding: 18px;
+      background:
+        linear-gradient(180deg, rgba(15,91,66,.1), rgba(255,255,255,.95)),
+        #fff;
+      border: 1px solid #eadfce;
+      margin-bottom: 12px;
+    }
+
+    .profile-section-label {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin: 12px 2px 8px;
+      font-size: 13px;
+      font-weight: 900;
+      color: var(--green);
+    }
+
+    .profile-section-label span {
+      color: var(--muted);
+      font-size: 10px;
+      font-weight: 700;
+    }
+
+    .profile-field-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    .profile-field {
+      min-height: 58px;
+      border-radius: 15px;
+      padding: 10px;
+      background: #f8f2e8;
+      border: 1px solid #eadfce;
+    }
+
+    .profile-field b {
+      display: block;
+      font-size: 12px;
+      margin-bottom: 4px;
+    }
+
+    .profile-field span {
+      color: var(--muted);
+      font-size: 11px;
+      line-height: 1.35;
+    }
+
+    .intro-card {
+      background: #fff;
+      border-radius: 18px;
+      padding: 14px;
+      margin-bottom: 10px;
+      box-shadow: 0 10px 24px rgba(49,42,32,.06);
+    }
+
+    .intro-card h3 {
+      margin: 0 0 6px;
+      font-size: 15px;
+    }
+
+    .intro-card p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.55;
+    }
+
+    .home-identity {
+      display: grid;
+      grid-template-columns: 70px 1fr;
+      gap: 14px;
+      align-items: center;
+      margin-bottom: 10px;
+      border-radius: 24px;
+      padding: 16px;
+      background: #fff;
+      box-shadow: 0 10px 24px rgba(49,42,32,.06);
+    }
+
+    .home-avatar {
+      width: 70px;
+      height: 70px;
+      border-radius: 24px;
+      background:
+        radial-gradient(circle at 70% 28%, rgba(255,255,255,.6), transparent 20%),
+        linear-gradient(135deg, #f0c35b, #ec7a3a 48%, #0f5b42);
+    }
+
+    .home-identity h3 {
+      margin: 0;
+      font-size: 18px;
+      line-height: 1.25;
+    }
+
+    .home-identity p {
+      margin: 7px 0 0;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.45;
+    }
+
+    .pain-card {
+      background: #fff;
+      border-radius: 20px;
+      padding: 14px;
+      margin-bottom: 12px;
+      border: 1px solid #eadfce;
+    }
+
+    .pain-card b {
+      display: block;
+      color: var(--green);
+      font-size: 14px;
+      margin-bottom: 4px;
+    }
+
+    .pain-card p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    .solution-label {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin: 12px 2px 8px;
+      font-size: 15px;
+      font-weight: 900;
+    }
+
+    .solution-label span {
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .solution-card {
+      min-height: 178px;
+      border-radius: 24px;
+      overflow: hidden;
+      background: #fff;
+      box-shadow: 0 14px 28px rgba(49,42,32,.08);
+      margin-bottom: 12px;
+      display: grid;
+      grid-template-columns: 42% 58%;
+      cursor: pointer;
+    }
+
+    .solution-photo {
+      position: relative;
+      background:
+        linear-gradient(180deg, rgba(0,0,0,0), rgba(0,0,0,.44)),
+        url("assets/event-dinner-chat.png") center / cover no-repeat;
+    }
+
+    .solution-photo.warm {
+      background:
+        linear-gradient(180deg, rgba(0,0,0,0), rgba(0,0,0,.42)),
+        url("assets/event-walk-lightmeal.png") center / cover no-repeat;
+    }
+
+    .solution-photo span {
+      position: absolute;
+      left: 11px;
+      bottom: 12px;
+      color: #fff;
+      font-size: 11px;
+      font-weight: 900;
+    }
+
+    .solution-info {
+      padding: 14px 13px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .solution-info h3 {
+      margin: 0;
+      font-size: 17px;
+      line-height: 1.28;
+    }
+
+    .solution-info p {
+      margin: 6px 0 0;
+      color: var(--muted);
+      font-size: 11px;
+      line-height: 1.45;
+    }
+
+    .solution-actions {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .star-btn {
+      width: 34px;
+      height: 34px;
+      border-radius: 999px;
+      border: 0;
+      background: var(--orange-soft);
+      color: var(--orange);
+      font-weight: 900;
+      cursor: pointer;
+      font-size: 18px;
+      flex: 0 0 auto;
+    }
+
+    .home-search {
+      height: 44px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.92);
+      display: grid;
+      grid-template-columns: 34px 1fr;
+      align-items: center;
+      padding: 0 14px;
+      gap: 8px;
+      color: var(--muted);
+      font-size: 13px;
+      margin-bottom: 12px;
+      box-shadow: 0 8px 20px rgba(49,42,32,.05);
+    }
+
+    .feature-tiles {
+      display: grid;
+      grid-template-columns: 1.35fr .85fr;
+      gap: 10px;
+      margin-bottom: 12px;
+      margin-top: 14px;
+    }
+
+    .feature-tile {
+      min-height: 128px;
+      border-radius: 22px;
+      padding: 16px;
+      color: #fffaf0;
+      background:
+        linear-gradient(180deg, rgba(0,0,0,.05), rgba(0,0,0,.36)),
+        radial-gradient(circle at 70% 24%, rgba(255,255,255,.32), transparent 22%),
+        linear-gradient(135deg, #0f5b42, #efbd54);
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      overflow: hidden;
+    }
+
+    .feature-tile.small {
+      background:
+        linear-gradient(180deg, rgba(0,0,0,.03), rgba(0,0,0,.32)),
+        linear-gradient(135deg, #ec7a3a, #0f5b42);
+    }
+
+    .feature-tile b {
+      font-size: 19px;
+      line-height: 1.2;
+    }
+
+    .feature-tile span {
+      margin-top: 4px;
+      color: rgba(255,250,240,.82);
+      font-size: 11px;
+    }
+
+    .category-row {
+      display: flex;
+      gap: 8px;
+      overflow: hidden;
+      margin: 4px 0 12px;
+    }
+
+    .category-pill {
+      flex: 0 0 auto;
+      min-height: 38px;
+      padding: 0 13px;
+      border-radius: 12px;
+      background: #fff;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 13px;
+      font-weight: 900;
+      color: var(--ink);
+      box-shadow: 0 6px 16px rgba(49,42,32,.05);
+    }
+
+    .category-pill.active {
+      background: #20ef8a;
+      color: #113323;
+    }
+
+    .activity-filter {
+      min-height: 46px;
+      border-radius: 18px;
+      background: rgba(255,255,255,.88);
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 14px;
+      color: var(--muted);
+      font-size: 12px;
+      box-shadow: 0 8px 20px rgba(49,42,32,.05);
+    }
+
+    .activity-filter b {
+      color: var(--ink);
+      font-size: 13px;
+    }
+
+    .event-card {
+      min-height: 186px;
+      border-radius: 22px;
+      overflow: hidden;
+      background: #fff;
+      display: grid;
+      grid-template-columns: 43% 57%;
+      box-shadow: 0 12px 26px rgba(49,42,32,.08);
+      margin-bottom: 12px;
+      cursor: pointer;
+    }
+
+    .event-photo {
+      position: relative;
+      background:
+        linear-gradient(180deg, rgba(0,0,0,0), rgba(0,0,0,.42)),
+        url("assets/event-dinner-chat.png") center / cover no-repeat;
+    }
+
+    .event-card.warm .event-photo {
+      background:
+        linear-gradient(180deg, rgba(0,0,0,0), rgba(0,0,0,.42)),
+        url("assets/event-walk-lightmeal.png") center / cover no-repeat;
+    }
+
+    .event-photo span {
+      position: absolute;
+      left: 12px;
+      bottom: 12px;
+      color: #fff;
+      font-size: 12px;
+      font-weight: 900;
+    }
+
+    .event-info {
+      padding: 16px 14px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .event-date {
+      display: flex;
+      align-items: baseline;
+      gap: 7px;
+      color: #b3b3b3;
+      font-weight: 900;
+    }
+
+    .event-date b {
+      font-size: 31px;
+      letter-spacing: -.05em;
+    }
+
+    .event-date span {
+      font-size: 11px;
+      line-height: 1.1;
+    }
+
+    .event-info h3 {
+      margin: 4px 0 5px;
+      font-size: 17px;
+      line-height: 1.3;
+    }
+
+    .event-info p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 11px;
+      line-height: 1.45;
+    }
+
+    .detail-hero-photo {
+      min-height: 310px;
+      margin: -14px -14px 0;
+      padding: 52px 20px 22px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      color: #fffaf0;
+      background:
+        linear-gradient(180deg, rgba(0,0,0,.12), rgba(0,0,0,.62)),
+        url("assets/event-dinner-chat.png") center / cover no-repeat;
+    }
+
+    .detail-hero-photo h2 {
+      margin: 0;
+      font-size: 25px;
+      line-height: 1.24;
+    }
+
+    .detail-hero-photo p {
+      margin: 8px 0 0;
+      color: rgba(255,250,240,.84);
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    .detail-panel {
+      background: #fff;
+      border-radius: 24px 24px 0 0;
+      margin: -16px -14px 0;
+      padding: 20px 14px 86px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .info-list {
+      background: #f8f8f8;
+      border-radius: 18px;
+      padding: 4px 14px;
+      margin-bottom: 16px;
+    }
+
+    .info-row {
+      min-height: 56px;
+      display: grid;
+      grid-template-columns: 24px 1fr;
+      gap: 10px;
+      align-items: center;
+      border-bottom: 1px solid #e8e8e8;
+      font-size: 13px;
+    }
+
+    .info-row:last-child { border-bottom: 0; }
+
+    .info-row b {
+      display: block;
+      font-size: 13px;
+      margin-bottom: 2px;
+    }
+
+    .info-row span {
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .safe-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      margin-bottom: 18px;
+    }
+
+    .safe-card {
+      min-height: 86px;
+      border-radius: 14px;
+      padding: 10px;
+      background: #f7f1e7;
+      color: var(--muted);
+      font-size: 11px;
+      line-height: 1.35;
+    }
+
+    .safe-card b {
+      display: block;
+      color: var(--ink);
+      font-size: 12px;
+      margin-bottom: 5px;
+    }
+
+    .play-copy {
+      font-size: 15px;
+      line-height: 1.75;
+      color: var(--ink);
+      white-space: pre-line;
+    }
+
+    .join-bar {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 70px;
+      background: rgba(255,255,255,.98);
+      display: grid;
+      grid-template-columns: 62px 62px 1fr;
+      gap: 8px;
+      align-items: center;
+      padding: 8px 14px 14px;
+      border-top: 1px solid #e6e0d8;
+      z-index: 25;
+    }
+
+    .join-mini {
+      border: 0;
+      background: transparent;
+      color: #8a938c;
+      display: grid;
+      justify-items: center;
+      gap: 2px;
+      font-size: 10px;
+      cursor: pointer;
+    }
+
+    .join-main {
+      border: 0;
+      height: 48px;
+      border-radius: 999px;
+      background: linear-gradient(90deg, #202420 0 48%, #10c98a 48% 100%);
+      color: #fffaf0;
+      font-weight: 900;
+      font-size: 15px;
+      cursor: pointer;
+    }
+
+    .showcase-top {
+      display: grid;
+      grid-template-columns: 88px 1fr;
+      gap: 14px;
+      align-items: center;
+    }
+
+    .avatar-photo {
+      width: 88px;
+      height: 88px;
+      border-radius: 28px;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,.04), rgba(15,91,66,.22)),
+        url("assets/xiaoc-avatar.png") center 18% / 86% auto no-repeat,
+        #f4eadf;
+      box-shadow: 0 14px 28px rgba(49,42,32,.14);
+    }
+
+    .life-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      margin-top: 14px;
+    }
+
+    .life-photo {
+      min-height: 76px;
+      border-radius: 16px;
+      background:
+        radial-gradient(circle at 74% 22%, rgba(255,255,255,.52), transparent 20%),
+        linear-gradient(135deg, #e9c66a, #f2a66d 52%, #87aa97);
+    }
+
+    .feed-card {
+      background: #fff;
+      border-radius: 18px;
+      padding: 14px;
+      margin-bottom: 12px;
+      box-shadow: 0 10px 24px rgba(49,42,32,.06);
+    }
+
+    .feed-card h3 {
+      margin: 0;
+      font-size: 16px;
+    }
+
+    .feed-card p {
+      margin: 8px 0 0;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.55;
+    }
+
+    .section-title {
+      font-size: 19px;
+      font-weight: 900;
+      margin: 14px 2px 10px;
+    }
+
+    .activity-card {
+      display: grid;
+      grid-template-columns: 1fr 88px;
+      gap: 12px;
+      align-items: stretch;
+      background: #fff;
+      border-radius: 20px;
+      padding: 14px;
+      margin-bottom: 12px;
+      box-shadow: 0 10px 24px rgba(49, 42, 32, .06);
+      cursor: pointer;
+    }
+
+    .thumb {
+      border-radius: 16px;
+      background:
+        radial-gradient(circle at 72% 30%, rgba(255,255,255,.62), transparent 20%),
+        linear-gradient(135deg, #edbd55, #ec7a3a 48%, #0f5b42);
+      min-height: 92px;
+    }
+
+    .meta {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      margin-top: 8px;
+      color: var(--muted);
+      font-size: 11px;
+    }
+
+    .detail-visual {
+      min-height: 170px;
+      border-radius: 24px;
+      background:
+        linear-gradient(140deg, rgba(15,91,66,.94), rgba(15,91,66,.7)),
+        radial-gradient(circle at 80% 20%, #f0c35b, transparent 22%);
+      color: #fffaf0;
+      padding: 22px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      margin-bottom: 12px;
+    }
+
+    .detail-visual h2 {
+      margin: 0;
+      font-size: 26px;
+      line-height: 1.2;
+    }
+
+    .timeline {
+      display: grid;
+      gap: 9px;
+      margin-top: 10px;
+    }
+
+    .timeline-item {
+      display: grid;
+      grid-template-columns: 24px 1fr;
+      gap: 8px;
+      align-items: start;
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .dot {
+      width: 22px;
+      height: 22px;
+      border-radius: 999px;
+      display: grid;
+      place-items: center;
+      background: var(--mint);
+      color: var(--green);
+      font-weight: 900;
+      font-size: 11px;
+    }
+
+    .action-bar {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 9px;
+      margin-top: 12px;
+    }
+
+    .modal {
+      position: absolute;
+      inset: 0;
+      background: rgba(0,0,0,.42);
+      z-index: 20;
+      display: none;
+      align-items: flex-end;
+      padding: 14px;
+    }
+
+    .modal.show { display: flex; }
+
+    .sheet {
+      width: 100%;
+      background: #fff;
+      border-radius: 24px 24px 18px 18px;
+      padding: 18px;
+      box-shadow: 0 -18px 44px rgba(0,0,0,.22);
+    }
+
+    .sheet h3 { margin: 0 0 8px; font-size: 18px; }
+    .sheet p { margin: 0 0 12px; color: var(--muted); font-size: 12px; line-height: 1.55; }
+
+    .reason-list {
+      display: grid;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+
+    .reason-list button {
+      border: 1px solid #e7ddcf;
+      background: #fffaf4;
+      border-radius: 14px;
+      min-height: 40px;
+      text-align: left;
+      padding: 0 12px;
+      color: var(--ink);
+      cursor: pointer;
+    }
+
+    .metric-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 9px;
+      margin-bottom: 12px;
+    }
+
+    .metric {
+      background: #fff;
+      border-radius: 18px;
+      padding: 14px;
+      min-height: 86px;
+      box-shadow: 0 8px 18px rgba(49,42,32,.05);
+    }
+
+    .metric b {
+      display: block;
+      font-size: 27px;
+      color: var(--green);
+      line-height: 1;
+      margin-bottom: 6px;
+    }
+
+    .metric span {
+      color: var(--muted);
+      font-size: 11px;
+    }
+
+    .bubble-chart {
+      position: relative;
+      height: 190px;
+      border-radius: 22px;
+      background: #fff;
+      margin-bottom: 12px;
+      overflow: hidden;
+      border: 1px solid #eee4d6;
+    }
+
+    .need-bubble {
+      position: absolute;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      text-align: center;
+      color: #fffaf0;
+      font-size: 11px;
+      line-height: 1.25;
+      font-weight: 900;
+      padding: 10px;
+      box-shadow: 0 12px 26px rgba(15, 91, 66, .16);
+    }
+
+    .need-bubble.green { background: var(--green); }
+    .need-bubble.orange { background: var(--orange); }
+    .need-bubble.gold { background: var(--gold); }
+    .need-bubble.blue { background: #4e91a0; }
+
+    .ops-hero {
+      padding: 14px;
+      border-radius: 8px;
+      background: linear-gradient(135deg, #163f34, #2f7a68 58%, #d7864b);
+      color: #fffaf0;
+      margin-bottom: 10px;
+    }
+
+    .ops-hero small {
+      display: block;
+      color: rgba(255,250,240,.72);
+      font-size: 10px;
+      margin-bottom: 6px;
+    }
+
+    .ops-hero h3 {
+      margin: 0;
+      font-size: 16px;
+      line-height: 1.25;
+    }
+
+    .ops-hero p {
+      margin: 7px 0 0;
+      font-size: 11px;
+      line-height: 1.45;
+      color: rgba(255,250,240,.82);
+    }
+
+    .ops-kpis {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 7px;
+      margin-bottom: 10px;
+    }
+
+    .ops-kpi {
+      min-height: 58px;
+      border-radius: 8px;
+      background: #fff;
+      border: 1px solid #ece5da;
+      padding: 9px;
+    }
+
+    .ops-kpi b {
+      display: block;
+      color: var(--green);
+      font-size: 17px;
+      line-height: 1;
+      margin-bottom: 5px;
+    }
+
+    .ops-kpi span {
+      display: block;
+      color: var(--muted);
+      font-size: 9px;
+      line-height: 1.25;
+    }
+
+    .need-list {
+      display: grid;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+
+    .need-row {
+      background: #fff;
+      border: 1px solid #ece5da;
+      border-radius: 8px;
+      padding: 10px;
+    }
+
+    .need-row-head {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 8px;
+      align-items: center;
+      margin-bottom: 7px;
+    }
+
+    .need-row-head b {
+      font-size: 12px;
+    }
+
+    .need-row-head span {
+      color: var(--muted);
+      font-size: 10px;
+    }
+
+    .need-bar {
+      height: 7px;
+      border-radius: 999px;
+      background: #ebe7dd;
+      overflow: hidden;
+    }
+
+    .need-bar i {
+      display: block;
+      height: 100%;
+      border-radius: inherit;
+      background: linear-gradient(90deg, var(--green), var(--orange));
+    }
+
+    .quote-card {
+      border-radius: 8px;
+      background: #fff;
+      border: 1px solid #ece5da;
+      padding: 10px;
+      margin-bottom: 8px;
+    }
+
+    .quote-card p {
+      margin: 0;
+      font-size: 11px;
+      line-height: 1.45;
+      color: var(--ink);
+    }
+
+    .quote-card span {
+      display: block;
+      margin-top: 6px;
+      font-size: 10px;
+      color: var(--muted);
+    }
+
+    .need-tree {
+      display: grid;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+
+    .tree-branch {
+      border-radius: 8px;
+      background: #fff;
+      border: 1px solid #ece5da;
+      padding: 10px;
+    }
+
+    .tree-branch h3 {
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+      align-items: center;
+      margin: 0 0 8px;
+      font-size: 13px;
+    }
+
+    .tree-branch h3 span {
+      color: var(--muted);
+      font-size: 10px;
+      font-weight: 700;
+    }
+
+    .tree-items {
+      display: grid;
+      gap: 6px;
+    }
+
+    .tree-item {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 8px;
+      align-items: center;
+      min-height: 34px;
+      border-radius: 8px;
+      background: #f8f6ef;
+      padding: 7px 8px;
+      font-size: 11px;
+    }
+
+    .tree-item em {
+      font-style: normal;
+      color: var(--green);
+      font-weight: 800;
+      font-size: 10px;
+    }
+
+    .resource-map {
+      display: grid;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+
+    .resource-card {
+      display: grid;
+      grid-template-columns: 34px 1fr auto;
+      gap: 9px;
+      align-items: center;
+      border-radius: 8px;
+      background: #fff;
+      border: 1px solid #ece5da;
+      padding: 9px;
+    }
+
+    .resource-icon {
+      width: 34px;
+      height: 34px;
+      border-radius: 8px;
+      display: grid;
+      place-items: center;
+      background: var(--mint);
+      color: var(--green);
+      font-weight: 800;
+      font-size: 16px;
+    }
+
+    .resource-card b {
+      display: block;
+      font-size: 12px;
+      margin-bottom: 3px;
+    }
+
+    .resource-card span {
+      color: var(--muted);
+      font-size: 10px;
+      line-height: 1.3;
+    }
+
+    .match-score {
+      color: var(--orange);
+      font-weight: 900;
+      font-size: 12px;
+    }
+
+    .proposal-card {
+      border-radius: 8px;
+      background: #fff;
+      border: 1px solid #ece5da;
+      padding: 12px;
+      margin-bottom: 10px;
+    }
+
+    .proposal-card h3 {
+      margin: 0 0 6px;
+      font-size: 14px;
+    }
+
+    .proposal-card p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 11px;
+      line-height: 1.45;
+    }
+
+    .proposal-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 7px;
+      margin-top: 10px;
+    }
+
+    .proposal-box {
+      min-height: 54px;
+      border-radius: 8px;
+      background: #f8f6ef;
+      padding: 8px;
+      font-size: 10px;
+      line-height: 1.35;
+      color: var(--muted);
+    }
+
+    .proposal-box b {
+      display: block;
+      color: var(--ink);
+      font-size: 11px;
+      margin-bottom: 3px;
+    }
+
+    .match-row {
+      display: grid;
+      grid-template-columns: 1fr 24px 1fr;
+      align-items: center;
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .mini-box {
+      min-height: 82px;
+      border-radius: 16px;
+      background: #fff;
+      border: 1px solid #eadfce;
+      padding: 12px;
+      font-size: 12px;
+      line-height: 1.45;
+    }
+
+    .mini-box b { display: block; margin-bottom: 4px; }
+
+    .arrow {
+      color: var(--orange);
+      font-weight: 900;
+      text-align: center;
+      font-size: 22px;
+    }
+
+    .toast {
+      position: absolute;
+      left: 50%;
+      bottom: 84px;
+      transform: translateX(-50%);
+      z-index: 30;
+      background: rgba(24,30,27,.92);
+      color: #fff;
+      border-radius: 999px;
+      padding: 10px 14px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity .2s ease;
+      white-space: nowrap;
+      font-size: 12px;
+    }
+
+    .toast.show { opacity: 1; }
+
+    .right-card {
+      background: var(--panel);
+      border: 1px solid rgba(15,91,66,.13);
+      border-radius: 24px;
+      padding: 20px;
+      box-shadow: 0 16px 42px rgba(62, 49, 30, .08);
+    }
+
+    .right-card h2 {
+      margin: 0 0 10px;
+      font-size: 22px;
+      line-height: 1.25;
+    }
+
+    .right-card p, .right-card li {
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.7;
+    }
+
+    .right-card ul { margin: 0; padding-left: 18px; }
+
+    .flow-note {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 9px;
+      margin-top: 12px;
+    }
+
+    .flow-note div {
+      background: #fff;
+      border-radius: 16px;
+      padding: 12px;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.55;
+    }
+
+    .flow-note b {
+      display: block;
+      color: var(--green);
+      margin-bottom: 4px;
+      font-size: 13px;
+    }
+
+    /* Product polish: denser typography, calmer surfaces, clearer hierarchy. */
+    body {
+      background: linear-gradient(180deg, #f7f7f1 0%, #eef3ee 52%, #f6f1e9 100%);
+    }
+
+    .workspace {
+      grid-template-columns: 310px minmax(390px, 430px) minmax(330px, 400px);
+      gap: 24px;
+      padding: 24px;
+    }
+
+    .kicker {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .02em;
+    }
+
+    h1 {
+      font-size: 27px;
+      line-height: 1.22;
+    }
+
+    .intro {
+      font-size: 13px;
+      line-height: 1.58;
+    }
+
+    .role-tabs {
+      border-radius: 12px;
+      padding: 4px;
+    }
+
+    .role-tabs button {
+      min-height: 36px;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .steps {
+      gap: 7px;
+    }
+
+    .step {
+      min-height: 58px;
+      border-radius: 10px;
+      padding: 10px 11px;
+      grid-template-columns: 28px 1fr;
+      gap: 9px;
+    }
+
+    .step-num {
+      width: 26px;
+      height: 26px;
+      border-radius: 8px;
+      font-size: 11px;
+    }
+
+    .step b {
+      font-size: 13px;
+      margin-bottom: 1px;
+    }
+
+    .step span {
+      font-size: 11px;
+      line-height: 1.3;
+    }
+
+    .phone-shell {
+      box-shadow: 0 20px 48px rgba(40, 43, 34, .16);
+      background: #f6f5ef;
+    }
+
+    .phone-nav {
+      height: 50px;
+      background: rgba(255,255,255,.96);
+    }
+
+    .nav-title {
+      font-size: 16px;
+      font-weight: 800;
+    }
+
+    .phone-body {
+      height: calc(100% - 46px - 50px - 70px);
+      background: #f4f4ee;
+    }
+
+    .phone-shell.workbench-mode .phone-body {
+      height: calc(100% - 46px - 50px);
+    }
+
+    .phone-shell.workbench-mode .bottom-tabs {
+      display: none;
+    }
+
+    .scroll {
+      padding: 10px 10px 18px;
+    }
+
+    .bottom-tabs {
+      height: 66px;
+    }
+
+    .tab {
+      font-size: 10px;
+    }
+
+    .tab b {
+      font-size: 17px;
+    }
+
+    .hero {
+      min-height: 148px;
+      border-radius: 10px;
+      padding: 17px;
+      background: linear-gradient(135deg, #174d3d 0%, #2f7a68 58%, #d7864b 100%);
+      box-shadow: 0 10px 24px rgba(15, 91, 66, .12);
+    }
+
+    .hero::after {
+      display: none;
+    }
+
+    .hero h2 {
+      font-size: 20px;
+      line-height: 1.18;
+      font-weight: 800;
+    }
+
+    .hero p {
+      width: auto;
+      margin-top: 8px;
+      font-size: 11px;
+      line-height: 1.45;
+    }
+
+    .primary-btn, .ghost-btn, .orange-btn {
+      min-height: 36px;
+      padding: 0 13px;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .card, .question-card, .intro-card, .entry-route, .right-card, .pain-card,
+    .solution-card, .event-card, .detail-panel, .feed-card, .mini-box, .metric,
+    .upload-strip, .tag-explain, .showcase-head {
+      border-radius: 8px;
+      box-shadow: 0 6px 16px rgba(43, 48, 38, .05);
+    }
+
+    .card, .question-card, .intro-card, .entry-route, .pain-card {
+      padding: 12px;
+      margin-bottom: 9px;
+    }
+
+    .card h3, .question-card h3, .intro-card h3, .entry-route h3,
+    .feed-card h3, .home-identity h3, .solution-info h3, .event-info h3 {
+      font-size: 14px;
+      line-height: 1.28;
+      font-weight: 800;
+    }
+
+    .card p, .question-card p, .intro-card p, .entry-route p,
+    .feed-card p, .home-identity p, .pain-card p, .solution-info p,
+    .event-info p, .tag-explain p {
+      font-size: 11px;
+      line-height: 1.42;
+    }
+
+    .chips {
+      gap: 5px;
+      margin-top: 8px;
+    }
+
+    .chip {
+      min-height: 22px;
+      padding: 0 7px;
+      font-size: 10px;
+      font-weight: 700;
+    }
+
+    .wechat-bubble {
+      border-radius: 8px;
+      padding: 11px 12px;
+      font-size: 13px;
+      line-height: 1.45;
+    }
+
+    .wechat-card-cover {
+      min-height: 122px;
+      padding: 14px;
+      background: linear-gradient(135deg, #184d3d 0%, #357f72 56%, #d7864b 100%);
+    }
+
+    .wechat-card-cover b {
+      font-size: 17px;
+      line-height: 1.22;
+    }
+
+    .wechat-card-cover span, .wechat-card-foot {
+      font-size: 11px;
+    }
+
+    .voice-bar {
+      min-height: 40px;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .option {
+      border-radius: 8px;
+      padding: 8px;
+      font-size: 11px;
+    }
+
+    .photo-map {
+      height: 220px;
+      border-radius: 8px;
+      background: linear-gradient(145deg, #fdfdf8, #eef5ef);
+    }
+
+    .photo-node {
+      width: 104px;
+      height: 104px;
+      border-radius: 18px;
+    }
+
+    .trait {
+      min-height: 28px;
+      padding: 0 8px;
+      font-size: 10px;
+      font-weight: 700;
+    }
+
+    .home-identity {
+      grid-template-columns: 58px 1fr;
+      gap: 11px;
+      padding: 12px;
+      border-radius: 8px;
+    }
+
+    .home-avatar {
+      width: 58px;
+      height: 58px;
+      border-radius: 14px;
+    }
+
+    .solution-label, .section-title, .profile-section-label {
+      font-size: 12px;
+      margin: 10px 2px 7px;
+    }
+
+    .solution-label span, .profile-section-label span {
+      font-size: 10px;
+    }
+
+    .solution-card, .event-card {
+      grid-template-columns: 128px 1fr;
+      min-height: 138px;
+    }
+
+    .solution-info, .event-info {
+      padding: 12px;
+    }
+
+    .solution-photo, .event-photo {
+      border-radius: 8px 0 0 8px;
+    }
+
+    .event-date b {
+      font-size: 26px;
+      line-height: 1;
+    }
+
+    .event-date span {
+      font-size: 10px;
+    }
+
+    .category-row {
+      gap: 6px;
+      margin: 8px 0;
+    }
+
+    .category-pill {
+      min-height: 30px;
+      border-radius: 8px;
+      padding: 0 10px;
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .home-search, .activity-filter {
+      min-height: 38px;
+      border-radius: 8px;
+      font-size: 11px;
+    }
+
+    .detail-hero-photo {
+      min-height: 260px;
+      border-radius: 0 0 14px 14px;
+      padding: 18px;
+    }
+
+    .detail-hero-photo h2 {
+      font-size: 22px;
+      line-height: 1.18;
+    }
+
+    .detail-hero-photo p {
+      font-size: 11px;
+      line-height: 1.4;
+    }
+
+    .detail-panel {
+      padding: 14px;
+      margin-top: -16px;
+    }
+
+    .detail-panel h3 {
+      margin: 14px 0 8px;
+      font-size: 15px;
+    }
+
+    .info-row {
+      min-height: 46px;
+    }
+
+    .safe-grid {
+      gap: 7px;
+    }
+
+    .safe-card {
+      border-radius: 8px;
+      padding: 9px;
+      font-size: 10px;
+    }
+
+    .play-copy {
+      padding: 12px;
+      border-radius: 8px;
+      background: #faf9f4;
+      font-size: 12px;
+      line-height: 1.62;
+    }
+
+    .right-card {
+      padding: 16px;
+    }
+
+    .right-card h2 {
+      font-size: 18px;
+    }
+
+    .right-card p, .right-card li {
+      font-size: 12px;
+      line-height: 1.55;
+    }
+
+    @media (max-width: 1160px) {
+      .workspace {
+        grid-template-columns: 1fr;
+        justify-items: center;
+        padding: 20px;
+      }
+
+      .left, .right { width: min(100%, 650px); }
+    }
+
+    @media (max-width: 760px) {
+      html, body {
+        width: 100%;
+        min-height: 100%;
+        overflow: hidden;
+        background: #f4eee5;
+      }
+
+      .workspace {
+        display: block;
+        width: 100%;
+        min-height: 100dvh;
+        padding: 0;
+        background: #f4eee5;
+      }
+
+      .left, .right {
+        display: none;
+      }
+
+      .phone-shell {
+        width: 100vw;
+        height: 100vh;
+        height: 100dvh;
+        border: 0;
+        border-radius: 0;
+        box-shadow: none;
+        margin: 0;
+      }
+
+      .phone-shell::before {
+        display: none;
+      }
+
+      .phone-status {
+        height: calc(40px + env(safe-area-inset-top, 0px));
+        padding: calc(10px + env(safe-area-inset-top, 0px)) 18px 0;
+        background: rgba(255,255,255,.96);
+      }
+
+      .phone-nav {
+        height: 50px;
+        grid-template-columns: 42px 1fr 42px;
+      }
+
+      .nav-title {
+        font-size: 17px;
+      }
+
+      .phone-body {
+        height: calc(100dvh - 40px - env(safe-area-inset-top, 0px) - 50px - 68px - env(safe-area-inset-bottom, 0px));
+      }
+
+      .phone-shell.workbench-mode .phone-body {
+        height: calc(100dvh - 40px - env(safe-area-inset-top, 0px) - 50px);
+      }
+
+      .scroll {
+        padding: 10px 12px calc(22px + env(safe-area-inset-bottom, 0px));
+      }
+
+      .mobile-flow {
+        display: flex;
+        gap: 7px;
+        overflow-x: auto;
+        padding: 2px 2px 10px;
+        margin-bottom: 4px;
+        scrollbar-width: none;
+      }
+
+      .mobile-flow::-webkit-scrollbar { display: none; }
+
+      .mobile-roles {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 6px;
+        padding: 2px 2px 8px;
+      }
+
+      .mobile-role {
+        border: 0;
+        min-height: 30px;
+        border-radius: 8px;
+        background: rgba(255,255,255,.82);
+        color: var(--muted);
+        font-size: 10px;
+        font-weight: 700;
+      }
+
+      .mobile-role.active {
+        background: var(--green);
+        color: #fffaf0;
+      }
+
+      .mobile-step {
+        border: 0;
+        min-width: max-content;
+        min-height: 30px;
+        border-radius: 8px;
+        padding: 0 11px;
+        background: rgba(255,255,255,.82);
+        color: var(--muted);
+        font-size: 10px;
+        font-weight: 700;
+      }
+
+      .mobile-step.active {
+        background: var(--green);
+        color: #fffaf0;
+      }
+
+      .bottom-tabs {
+        height: calc(68px + env(safe-area-inset-bottom, 0px));
+        padding-bottom: calc(8px + env(safe-area-inset-bottom, 0px));
+      }
+
+      .join-bar {
+        bottom: 0;
+        height: 66px;
+        padding: 7px 12px 10px;
+      }
+
+      .join-main {
+        height: 46px;
+        font-size: 13px;
+      }
+
+      .detail-panel {
+        padding-bottom: 84px;
+      }
+
+      .home-identity {
+        grid-template-columns: 58px 1fr;
+        min-height: auto;
+        padding: 12px;
+      }
+
+      .home-avatar {
+        width: 58px;
+        height: 58px;
+        border-radius: 14px;
+      }
+
+      .home-identity h3 {
+        font-size: 14px;
+      }
+
+      .home-identity p {
+        font-size: 11px;
+      }
+
+      .solution-card,
+      .event-card {
+        grid-template-columns: minmax(132px, 42%) 1fr;
+      }
+
+      .event-date b {
+        font-size: 26px;
+      }
+
+      .feature-tiles {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .right-card, .card, .question-card, .intro-card, .entry-route {
+        border-radius: 8px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="workspace">
+    <section class="left">
+      <div class="kicker">KIC AI Community Brain · Demo</div>
+      <h1>创智天地 AI 社区第二大脑原型</h1>
+      <p class="intro">从人群需求识别、资源匹配到精准触达：让园区活动不再只靠人工经验，而是基于真实需求持续生成。</p>
+
+      <div class="role-tabs" aria-label="角色切换">
+        <button class="active" data-role="user">用户端</button>
+        <button data-role="partner">主理人/商户</button>
+        <button data-role="ops">运营端</button>
+      </div>
+
+      <div class="steps" id="steps"></div>
+    </section>
+
+    <section class="phone-shell" aria-label="小程序预览">
+      <div class="phone-status">
+        <span>22:30</span>
+        <span class="signals"><span class="bars"><i></i><i></i><i></i><i></i></span>5G<span class="battery"></span></span>
+      </div>
+      <div class="phone-nav">
+        <button class="icon-btn" data-back aria-label="返回">‹</button>
+        <div class="nav-title" id="phoneTitle">AI 社区助手<small>首次进入</small></div>
+        <button class="icon-btn" aria-label="更多">•••</button>
+      </div>
+      <div class="phone-body">
+        <div class="scroll">
+          <div class="mobile-roles" aria-label="手机端角色切换">
+            <button class="mobile-role active" data-role="user">用户</button>
+            <button class="mobile-role" data-role="partner">资源方</button>
+            <button class="mobile-role" data-role="ops">运营端</button>
+          </div>
+          <div class="mobile-flow" id="mobileFlow" aria-label="手机端流程切换"></div>
+          <div id="screen"></div>
+        </div>
+        <div class="modal" id="reasonModal">
+          <div class="sheet">
+            <h3>你想先考虑一下，是因为什么？</h3>
+            <p>这些原因不会公开，只会帮助我们判断活动门槛和推送节奏。</p>
+            <div class="reason-list">
+              <button data-reason="时间不确定">时间不确定，想等临近再决定</button>
+              <button data-reason="担心尴尬">担心现场尴尬，希望知道流程细节</button>
+              <button data-reason="人群不确定">不确定参与者是否同频</button>
+              <button data-reason="先收藏">只是想先收藏，之后再看</button>
+            </div>
+            <button class="primary-btn" data-close-modal>先帮我收藏</button>
+          </div>
+        </div>
+        <div class="toast" id="toast">已记录</div>
+      </div>
+      <nav class="bottom-tabs" aria-label="底部导航">
+        <button class="tab active" data-nav="user-home"><b>⌂</b><span>首页</span></button>
+        <button class="tab" data-nav="user-profile"><b>像</b><span>画像</span></button>
+        <button class="tab" data-nav="user-activity"><b>局</b><span>活动</span></button>
+        <button class="tab" data-nav="community"><b>议</b><span>社区</span></button>
+        <button class="tab" data-nav="user-showcase"><b>我</b><span>我的</span></button>
+      </nav>
+    </section>
+
+    <aside class="right">
+      <div class="right-card">
+        <h2 id="insightTitle">用户第一次进来，先建立信任</h2>
+        <p id="insightBody">不要一上来就让用户填表。先告诉他：我们会用一组温和问题理解他的关系需求，并把回答转成可编辑的人物画像。</p>
+      </div>
+      <div class="right-card">
+        <h2>这一步收集什么</h2>
+        <ul id="collectList">
+          <li>基本参与边界：年龄段、时间、可接受人数</li>
+          <li>关系需求：想认识怎样的人，想解决什么困扰</li>
+          <li>互动偏好：深聊、轻活动、饭局、散步、工作坊</li>
+        </ul>
+        <div class="flow-note">
+          <div><b>AI处理</b><span id="aiNote">把一问一答整理成标签、痛点和推荐策略。</span></div>
+          <div><b>人工把关</b><span id="humanNote">避免敏感判断，保留用户可修改和撤回的权利。</span></div>
+        </div>
+      </div>
+    </aside>
+  </main>
+
+  <script>
+    const flow = {
+      user: [
+        { id: "wechat-push", no: "1", title: "企微消息触达", desc: "用户已加微信后，收到个性化小程序卡片" },
+        { id: "wechat-entry", no: "2", title: "点击后的落地页", desc: "根据推送类型进入活动、画像或社区需求" },
+        { id: "user-register", no: "3", title: "首次进入", desc: "建立信任，说明为什么要问这些问题" },
+        { id: "user-chat", no: "4", title: "精准问答", desc: "语音或多选，收集真实关系需求" },
+        { id: "user-profile", no: "5", title: "立体画像", desc: "照片、关键词和画像解释" },
+        { id: "user-showcase", no: "6", title: "我的展示", desc: "生活照、自我介绍和日常动态" },
+        { id: "user-home", no: "7", title: "推荐主页", desc: "基于痛点推合适的关系场景" },
+        { id: "user-activity", no: "8", title: "活动详情", desc: "理解这场关系解决什么问题，再决定报名" },
+        { id: "user-community", no: "9", title: "社区互动", desc: "需求卡共鸣、评论和成局观察" }
+      ],
+      partner: [
+        { id: "partner-home", no: "1", title: "资源入驻", desc: "主理人/商户说明自己能提供什么" },
+        { id: "partner-needs", no: "2", title: "需求广场", desc: "看到高热需求与可响应机会" },
+        { id: "partner-match", no: "3", title: "共创匹配", desc: "与运营方一起把需求变成预活动" }
+      ],
+      ops: [
+        { id: "ops-dashboard", no: "1", title: "需求总览", desc: "看见本周真实需求、分类占比和可行动主题" },
+        { id: "ops-tree", no: "2", title: "需求树", desc: "把用户原话聚类成可运营的主题结构" },
+        { id: "ops-resource", no: "3", title: "资源匹配", desc: "把需求连接到空间、商户、主理人和渠道" },
+        { id: "ops-proposal", no: "4", title: "AI提案生成", desc: "生成活动/内容/推送方案，交给人工确认" },
+        { id: "ops-preactivity", no: "5", title: "预活动共创", desc: "发布到需求广场，等待商户、主理人和用户响应" },
+        { id: "ops-push", no: "6", title: "正式触达", desc: "资源确认后发布活动；成熟活动可直接推送" }
+      ]
+    };
+
+    const meta = {
+      "wechat-push": {
+        title: "企微负责触达：在合适时间推一条有理由的消息",
+        body: "用户添加 AI 社区助手后，系统不做高频打扰，而是根据画像、需求热度和活动成局状态，推送一条有明确理由的小程序卡片。",
+        collect: ["推送时间：工作日晚间或周五前", "推送对象：低压力社交需求、近期表达过兴趣的人", "推送内容：活动推荐、需求讨论、画像更新提醒"],
+        ai: "生成分层触达名单、推送标题、匹配理由和跳转目标。",
+        human: "审核语气、频率和是否值得推送，避免像广告轰炸。"
+      },
+      "wechat-entry": {
+        title: "小程序承接：不同推送进入不同页面",
+        body: "用户点击卡片后，不一定都进入首页。活动卡直接进入活动详情；画像提醒进入画像页；需求讨论进入社区需求卡。每个入口都回收点击、停留和下一步选择。",
+        collect: ["点击来源：哪条企微消息", "落地页面：活动详情/画像/社区需求/推荐主页", "后续动作：想参加、收藏、考虑原因、评论共鸣"],
+        ai: "根据进入后的行为更新画像和下一次推送优先级。",
+        human: "决定哪些入口适合直接成交，哪些入口只适合轻互动。"
+      },
+      "user-register": {
+        title: "用户第一次进来，先建立信任",
+        body: "不要一上来就让用户填表。先告诉他：我们会用一组温和问题理解他的关系需求，并把回答转成可编辑的人物画像。",
+        collect: ["基本参与边界：年龄段、时间、可接受人数", "关系需求：想认识怎样的人，想解决什么困扰", "互动偏好：深聊、轻活动、饭局、散步、工作坊"],
+        ai: "把一问一答整理成标签、痛点和推荐策略。",
+        human: "避免敏感判断，保留用户可修改和撤回的权利。"
+      },
+      "user-chat": {
+        title: "用语音和多选替代表格，让需求更真实",
+        body: "问题要更精准：既问他想要什么，也问他顾虑什么、能接受什么边界。用户可以语音回答，也可以多选，让系统得到更立体的输入。",
+        collect: ["当下关系任务：想拓圈、想恋爱、想找同行者或练习表达", "参与边界：人数、时间、公开程度、是否接受被介绍", "互动偏好：深聊、轻活动、饭局、散步、共同完成任务"],
+        ai: "把语音和多选答案整理成需求标签、痛点权重和推荐策略。",
+        human: "设计题目语气，避免审问感和过度隐私收集。"
+      },
+      "user-profile": {
+        title: "画像要围绕一个真实的人，而不是抽象标签",
+        body: "用户在问答结束后上传一张照片，系统在画像页展示照片和“此刻的标签”。这些标签不是固定定义，而是当前需求状态的温和总结。",
+        collect: ["用户上传的展示照片", "此刻标签：慢热、边界感、探索欲、表达方式", "画像解释：为什么是这个状态，以及适合什么场景"],
+        ai: "生成可解释画像、关键词维度和推荐理由。",
+        human: "检查表达是否温和，避免贴标签和价值判断。"
+      },
+      "user-showcase": {
+        title: "个人展示页要放在画像之后、推荐主页之前",
+        body: "展示页分两层：系统根据前面的问答自动生成基础介绍；用户再自己补充照片、生活方式、感悟和想公开的信息。",
+        collect: ["系统自动生成：一句话介绍、关系状态、适合场景", "用户自己录入：生活照、兴趣、感悟、做过的事", "用户愿意公开和隐藏的边界"],
+        ai: "辅助生成初版介绍和资料结构，减少用户填写压力。",
+        human: "给用户充分控制权，确保展示不变成压力和表演。"
+      },
+      "user-home": {
+        title: "主页围绕“我现在的问题”来组织",
+        body: "用户进来后先看到自己的痛点，再看到被推荐的活动，而不是一个冷启动活动列表。",
+        collect: ["活动点击", "收藏/考虑原因", "共鸣按钮和补充回答"],
+        ai: "根据画像与行为调整推荐排序。",
+        human: "决定哪些活动适合被主推，哪些只放入需求观察。"
+      },
+      "user-activity": {
+        title: "活动详情要说清楚：解决什么问题，适合谁",
+        body: "报名之外一定要有“考虑一下”。用户犹豫的原因本身就是很重要的需求数据。",
+        collect: ["报名意愿", "犹豫原因", "时间/人数/流程顾虑"],
+        ai: "把犹豫原因回流到活动设计和下一次推送策略。",
+        human: "优化活动说明、保障边界、控制参与人数。"
+      },
+      "user-community": {
+        title: "社区需求卡让用户先参与，而不是只等活动",
+        body: "当活动还不够多时，可以推真实需求卡：和你一样有顾虑的人在聊什么、大家希望怎样解决。用户的共鸣和评论会成为下一场活动的需求依据。",
+        collect: ["共鸣人数", "评论内容", "用户补充的顾虑", "是否愿意参加预活动"],
+        ai: "聚合高频表达，判断是否形成可发起的预活动。",
+        human: "筛选真实、有边界、有公共价值的需求讨论。"
+      },
+      "partner-home": {
+        title: "主理人/商户看到的是资源如何被使用",
+        body: "他们不只是上架场地或活动，而是说明自己能承接哪些社区需求。",
+        collect: ["可用空间/时段", "主理人能力", "适合人群和合作边界"],
+        ai: "把资源转成可匹配的场景标签。",
+        human: "审核资源质量和合作方式。"
+      },
+      "partner-needs": {
+        title: "需求广场让资源方看到真实机会",
+        body: "主理人和商户可以看到哪些需求热度高、哪类人群在等待、自己是否能响应。",
+        collect: ["资源响应", "可合作时段", "主理人提出的解法"],
+        ai: "推荐最可能匹配的需求卡。",
+        human: "确认响应是否靠谱，避免过度商业化。"
+      },
+      "partner-match": {
+        title: "共创匹配把需求、资源和运营规则放到一起",
+        body: "只有当需求、人群、空间、主理人和运营边界都成立，活动才真正生成。",
+        collect: ["共创方案", "资源承诺", "风控边界和人数上限"],
+        ai: "生成预活动结构和待确认清单。",
+        human: "做最终共创会议和发布确认。"
+      },
+      "ops-dashboard": {
+        title: "运营方第一眼要看到：社区现在需要什么",
+        body: "工作台不是活动后台，而是需求雷达：把用户的原话、点击、评论和报名顾虑聚合成可行动的社区主题。",
+        collect: ["需求总量与分类占比", "高热原话", "增长趋势", "可进入验证的主题"],
+        ai: "把分散表达聚类成五类一级需求，并给出优先级。",
+        human: "判断哪些需求值得回应，哪些先观察。"
+      },
+      "ops-tree": {
+        title: "需求树让 AI 的理解过程变得可见",
+        body: "运营方不只看数字，还要看每一类需求下面具体是什么：想认识靠谱的人、想运动但坚持不了、想学习 AI、想参与有意义的事。",
+        collect: ["一级需求", "二级主题", "人数/热度", "典型原话"],
+        ai: "把相似表达合并成主题节点，并标注观察/需求卡/预活动。",
+        human: "调整主题命名，确认是否符合社区语境。"
+      },
+      "ops-resource": {
+        title: "资源匹配回答：创智天地已有资源怎么被激活",
+        body: "同一个需求可以调用商户、空间、路线、主理人和内容渠道。这里体现瑞安资源不是被动提供场地，而是成为社区场景的一部分。",
+        collect: ["可用空间", "商户能力", "主理人能力", "时间窗口", "资源匹配度"],
+        ai: "根据需求条件推荐资源组合和缺口。",
+        human: "确认合作可行性、预算和现场边界。"
+      },
+      "ops-proposal": {
+        title: "AI 生成的是可审核提案，而不是直接发布",
+        body: "系统把需求、资源和风险变成 2-3 个候选方案：活动形式、适合人群、资源清单、推送对象和人工确认事项。",
+        collect: ["目标需求", "候选方案", "资源清单", "风险提示", "人工修改记录"],
+        ai: "生成活动/内容/推送一体化提案。",
+        human: "选择方案、修改语气、确认现场规则。"
+      },
+      "ops-preactivity": {
+        title: "预活动不是正式发布，而是共创邀约",
+        body: "运营方觉得 AI 提案可行后，先把它作为预活动发到需求广场，@ 相关商户和主理人，也让用户表达是否愿意参加。",
+        collect: ["商户响应", "主理人响应", "用户想参加", "可用时间", "资源承诺"],
+        ai: "生成共创邀约、响应对象和待确认清单。",
+        human: "协调时间、费用、人数、安全边界和最终是否成局。"
+      },
+      "ops-push": {
+        title: "正式触达分两类：成熟活动直接推，新需求先共创",
+        body: "已经成熟的活动可以直接匹配用户推送；新生成的活动必须先完成资源确认，再进入正式发布和分层触达。",
+        collect: ["活动成熟度", "资源确认状态", "推送点击", "报名/收藏", "考虑原因"],
+        ai: "判断直接推送或进入预活动，并更新下一轮推荐优先级。",
+        human: "控制触达频率，决定发布与复盘。"
+      }
+    };
+
+    const views = {
+      "wechat-push": `
+        <div class="wechat-view">
+          <div class="wechat-time">今天 18:12</div>
+          <div class="wechat-row">
+            <div class="wechat-avatar"></div>
+            <div class="wechat-bubble">
+              小C，今天不是让你“赶紧脱单”。<br><br>
+              我们发现你更适合从低压力、小人数、流程清楚的场景开始认识新人。<br><br>
+              本周五有一场晚餐轻聊天局，和你的画像匹配度很高。
+              <span class="wechat-link"> 点开看看是否适合你</span>
+            </div>
+          </div>
+          <div class="wechat-row">
+            <div class="wechat-avatar"></div>
+            <button class="wechat-bubble wechat-card" data-go="wechat-entry">
+              <div class="wechat-card-cover">
+                <b>周五轻聊天晚餐局</b>
+                <span>适合低压力同频探索型｜6-8人｜KIC附近</span>
+              </div>
+              <div class="wechat-card-foot">小程序 · AI 社区助手</div>
+            </button>
+          </div>
+        </div>
+      `,
+      "wechat-entry": `
+        <div class="push-source">来自企微消息 · 为你匹配了 3 个下一步</div>
+        <div class="entry-route active">
+          <h3>周五轻聊天晚餐局</h3>
+          <p>适合你当前“低压力认识新人”的需求。</p>
+          <div class="route-line">
+            <div class="route-node">企微活动卡<br>低压力晚餐局</div>
+            <div class="arrow">→</div>
+            <div class="route-node orange">活动详情页<br>匹配理由+报名</div>
+          </div>
+          <button class="primary-btn" data-go="user-activity" style="margin-top:12px;width:100%;">看活动详情</button>
+        </div>
+        <div class="entry-route">
+          <h3>完善你的社区主页</h3>
+          <p>上传生活照，补充你愿意公开的兴趣和边界。</p>
+          <div class="route-line">
+            <div class="route-node">企微提醒<br>完善你的社区主页</div>
+            <div class="arrow">→</div>
+            <div class="route-node orange">立体画像页<br>标签+展示编辑</div>
+          </div>
+          <button class="ghost-btn" data-go="user-profile" style="margin-top:12px;width:100%;">查看画像</button>
+        </div>
+        <div class="entry-route">
+          <h3>同类需求正在成局</h3>
+          <p>看看和你一样有顾虑的人正在期待什么。</p>
+          <div class="route-line">
+            <div class="route-node">企微话题<br>你也怕尴尬吗</div>
+            <div class="arrow">→</div>
+            <div class="route-node orange">社区需求页<br>共鸣+评论+成局观察</div>
+          </div>
+          <button class="ghost-btn" data-go="user-community" style="margin-top:12px;width:100%;">进入需求广场</button>
+        </div>
+      `,
+      "user-register": `
+        <div class="hero">
+          <h2>先理解你<br>最近的生活需求</h2>
+          <p>我们会把关系、健康、成长和日常偏好整理成可更新的社区画像。</p>
+          <button class="primary-btn" data-go="user-chat">开始建立需求画像</button>
+        </div>
+        <div class="card">
+          <h3>只问关键问题</h3>
+          <div class="chips">
+            <span class="chip">关系期待</span><span class="chip orange">健康状态</span><span class="chip blue">时间边界</span>
+          </div>
+          <p>少量多选 + 语音补充，随时可修改。</p>
+        </div>
+        <div class="card">
+          <h3>你会看到</h3>
+          <p>当前画像、推荐理由，以及适合你的园区活动和资源。</p>
+        </div>
+      `,
+      "user-chat": `
+        <div class="chat">
+          <div class="bubble bot">用 3 个问题，建立你的社区需求画像。</div>
+          <div class="voice-bar">按住说话：我最近最想改善的是…</div>
+          <div class="question-card demand-card">
+            <h3>1. 最近最需要什么？</h3>
+            <p>可多选，用于判断当前优先级。</p>
+            <div class="option-grid">
+              <button class="option active" data-toggle-option>❤️ 认识靠谱的人</button>
+              <button class="option active" data-toggle-option>🌿 身体状态更好</button>
+              <button class="option" data-toggle-option>🚀 学习成长探索</button>
+              <button class="option active" data-toggle-option>☕ 生活更有趣</button>
+              <button class="option" data-toggle-option>✨ 参与有意义的事</button>
+              <button class="option" data-toggle-option>🐾 宠物/亲子友好</button>
+            </div>
+          </div>
+          <div class="question-card">
+            <h3>2. 你更容易参与哪类场景？</h3>
+            <p>影响推荐形式和推送时间。</p>
+            <div class="option-grid">
+              <button class="option active" data-toggle-option>小人数轻社交</button>
+              <button class="option active" data-toggle-option>流程要清楚</button>
+              <button class="option" data-toggle-option>运动后顺便社交</button>
+              <button class="option" data-toggle-option>午休轻食/咖啡</button>
+            </div>
+          </div>
+          <div class="question-card">
+            <h3>3. 你有哪些参与顾虑？</h3>
+            <p>帮助系统降低门槛。</p>
+            <div class="option-grid">
+              <button class="option active" data-toggle-option>怕尴尬</button>
+              <button class="option" data-toggle-option>时间不稳定</button>
+              <button class="option active" data-toggle-option>怕运动强度太高</button>
+              <button class="option" data-toggle-option>不想被强推销</button>
+            </div>
+          </div>
+          <div class="bubble user">我想认识新人，也想把运动和饮食调整起来，但不想太有压力。</div>
+          <div class="upload-strip">
+            <div class="upload-preview"></div>
+            <div>
+              <h3>上传一张生活照</h3>
+              <p>用于生成你的立体画像和公开展示页，之后可以随时更换。</p>
+              <button class="ghost-btn" data-toast="已选择一张生活照">选择照片</button>
+            </div>
+          </div>
+          <div class="card">
+            <h3>AI 将整理为</h3>
+            <p>需求标签、场景偏好、推荐理由和触达策略。</p>
+            <button class="primary-btn" data-go="user-profile" style="margin-top:12px;width:100%;">生成我的画像</button>
+          </div>
+        </div>
+      `,
+      "user-profile": `
+        <div class="photo-map">
+          <div class="photo-node has-photo">生活照<small>已用于画像</small></div>
+          <span class="trait" style="left:18px;top:24px;">慢热但愿意探索</span>
+          <span class="trait orange" style="right:18px;top:38px;">怕强目的社交</span>
+          <span class="trait blue" style="left:24px;bottom:46px;">适合小组互动</span>
+          <span class="trait" style="right:22px;bottom:30px;">重视边界感</span>
+          <span class="trait orange" style="left:118px;top:198px;">需要自然话题</span>
+        </div>
+        <div class="card">
+          <h3>此刻的你：低压力生活重启型</h3>
+          <p>标签不是固定定义，而是你近期需求的状态快照。</p>
+          <div class="chips">
+            <span class="chip">慢热社交</span><span class="chip">轻运动</span><span class="chip orange">控糖轻食</span><span class="chip blue">小组同行</span>
+          </div>
+          <div class="tag-explain">
+            <b>画像说明</b>
+            <p>你需要的不是单一活动，而是“轻社交 + 健康生活 + 附近可达”的组合场景。</p>
+          </div>
+        </div>
+        <div class="card">
+          <h3>推荐逻辑</h3>
+          <p>你同时选择了认识新人、轻运动和体重管理。系统会优先推能“一次回应多种需求”的社区场景。</p>
+        </div>
+        <button class="primary-btn" data-go="user-showcase" style="width:100%;">完善我的展示页</button>
+      `,
+      "user-showcase": `
+        <div class="showcase-head">
+          <div class="showcase-top">
+            <div class="avatar-photo"></div>
+            <div>
+              <h3>小C的社区主页</h3>
+              <p>慢热，想认识同频的人，也在尝试更健康的生活节奏。</p>
+              <div class="chips"><span class="chip">城市散步</span><span class="chip orange">轻食</span><span class="chip blue">低压力社交</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="profile-section-label">系统自动生成 <span>可编辑 / 可隐藏</span></div>
+        <div class="intro-card">
+          <h3>一句话介绍</h3>
+          <p>一个慢热但真诚的城市探索者，喜欢在轻松的活动里慢慢认识人。</p>
+          <div class="profile-field-grid">
+            <div class="profile-field"><b>关系需求</b><span>低压力认识新人</span></div>
+            <div class="profile-field"><b>生活需求</b><span>轻运动、轻食、规律打卡</span></div>
+          </div>
+        </div>
+        <div class="profile-section-label">我自己补充 <span>更生活化的公开资料</span></div>
+        <div class="intro-card">
+          <h3>我想让别人知道</h3>
+          <p>我喜欢自然一点的认识方式，也想找人一起把生活节奏慢慢调好。</p>
+          <div class="chips"><span class="chip">周末散步</span><span class="chip">低糖咖啡</span><span class="chip orange">轻聊天</span></div>
+        </div>
+        <div class="life-grid">
+          <div class="life-photo"></div>
+          <div class="life-photo"></div>
+          <div class="life-photo"></div>
+        </div>
+        <div class="feed-card">
+          <h3>最近动态</h3>
+          <p>上周末去看了一个社区展览，发现和陌生人聊“空间记忆”比聊工作自然很多。</p>
+        </div>
+        <div class="action-bar">
+          <button class="ghost-btn" data-toast="可以继续添加生活照/感悟">发布动态</button>
+          <button class="primary-btn" data-go="user-home">进入推荐主页</button>
+        </div>
+      `,
+      "user-home": `
+        <div class="home-identity">
+          <div class="home-avatar"></div>
+          <div>
+            <h3>小C，今天优先回应 2 个需求</h3>
+            <p>认识新人 + 健康生活，适合从低压力场景开始。</p>
+          </div>
+        </div>
+        <div class="pain-card">
+          <b>AI 识别到的当前需求</b>
+          <p>想拓展关系，但怕尴尬；也想调整运动和饮食，希望有人一起开始。</p>
+        </div>
+        <div class="solution-label">为你推荐的社区场景 <span>跨需求匹配</span></div>
+        <div class="solution-card">
+          <div class="solution-photo"><span>42人想参加｜6人已成局</span></div>
+          <div class="solution-info">
+            <div>
+              <div class="event-date"><b>8/02</b><span>周五<br>19:30</span></div>
+              <h3>周五轻聊天晚餐局</h3>
+              <p>关系连接：小人数、流程清楚、自然开口。</p>
+            </div>
+            <div>
+              <div class="chips"><span class="chip">低压力</span><span class="chip orange">主推</span></div>
+              <div class="solution-actions">
+                <button class="ghost-btn" data-go="user-activity">看详情</button>
+                <button class="star-btn" data-toast="已记录：你喜欢轻聊天晚餐局">★</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="solution-card">
+          <div class="solution-photo warm"><span>18人共鸣｜招募中</span></div>
+          <div class="solution-info">
+            <div>
+              <div class="event-date"><b>8/03</b><span>周六<br>16:00</span></div>
+              <h3>晨间散步 + 轻食补给</h3>
+              <p>健康生活：轻运动、控糖轻食、顺便认识人。</p>
+            </div>
+            <div>
+              <div class="chips"><span class="chip">健康</span><span class="chip blue">轻食</span></div>
+              <div class="solution-actions">
+                <button class="ghost-btn" data-toast="已收藏健康生活场景">收藏</button>
+                <button class="star-btn" data-toast="已记录：你喜欢轻运动轻食">★</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="section-title">继续探索</div>
+        <div class="home-search"><b>⌕</b><span>搜索关系活动、主理人、场景...</span></div>
+        <div class="feature-tiles">
+          <div class="feature-tile"><b>需求广场</b><span>真实原话正在变成社区场景</span></div>
+          <div class="feature-tile small"><b>资源地图</b><span>商户、空间、主理人如何回应</span></div>
+        </div>
+        <div class="category-row">
+          <span class="category-pill active">🔥 热门</span>
+          <span class="category-pill">ALL 全部</span>
+          <span class="category-pill">☕ 轻聊天</span>
+          <span class="category-pill">🌿 健康</span>
+          <span class="category-pill">🥗 轻食</span>
+        </div>
+        <div class="activity-filter"><span>看看，最近的同频人在忙什么</span><b>排序｜筛选</b></div>
+        <div class="event-card" data-go="user-activity">
+          <div class="event-photo"><span>42人想参加｜6人已成局</span></div>
+          <div class="event-info">
+            <div>
+              <div class="event-date"><b>8/02</b><span>周五<br>19:30</span></div>
+              <h3>周五轻聊天晚餐局</h3>
+              <p>📍 KIC附近 · 恰好主持<br>解决：第一次见面尴尬、社交压力高。</p>
+            </div>
+            <div class="chips"><span class="chip">低压力</span><span class="chip orange">主推</span></div>
+          </div>
+        </div>
+        <div class="event-card warm">
+          <div class="event-photo"><span>18人共鸣｜招募中</span></div>
+          <div class="event-info">
+            <div>
+              <div class="event-date"><b>8/03</b><span>周六<br>16:00</span></div>
+              <h3>晨间散步 + 轻食补给</h3>
+              <p>📍 大学路附近 · 4-6人<br>解决：轻运动、健康饮食、低压力社交。</p>
+            </div>
+            <div class="chips"><span class="chip">健康</span><span class="chip blue">轻食</span></div>
+          </div>
+        </div>
+      `,
+      "user-activity": `
+        <div class="push-source">
+          推荐理由：低压力社交需求高匹配 · KIC附近 · 下班后可达
+        </div>
+        <div class="detail-hero-photo">
+          <h2>周五轻聊天晚餐局</h2>
+          <p>小人数饭局，用清楚流程降低第一次见面的尴尬。</p>
+          <div class="chips"><span class="chip">6-8人</span><span class="chip orange">低压力</span><span class="chip blue">KIC附近</span></div>
+        </div>
+        <div class="detail-panel">
+          <div class="info-list">
+            <div class="info-row"><span>🕒</span><div><b>活动时间</b><span>08.02 周五 19:30 - 21:30</span></div></div>
+            <div class="info-row"><span>📍</span><div><b>集合地点</b><span>KIC附近合作商户 · 步行可达</span></div></div>
+            <div class="info-row"><span>👥</span><div><b>参与人数</b><span>6-8人小桌，男女比例尽量平衡</span></div></div>
+          </div>
+          <h3>参与更安心</h3>
+          <div class="safe-grid">
+            <div class="safe-card"><b>共创费用</b>含轻餐/茶饮、主持与活动材料</div>
+            <div class="safe-card"><b>退出政策</b>活动前6小时可说明情况转候补</div>
+            <div class="safe-card"><b>关系边界</b>不强配对，不公开联系方式</div>
+          </div>
+          <h3>本场怎么进行</h3>
+          <div class="play-copy">19:30  到店集合，主理人破冰
+19:45  共桌轻餐，围绕 3 个低压力话题聊天
+20:35  自由换座，选择继续聊或加入散步小组
+21:20  结束前反馈：想认识谁、还顾虑什么</div>
+        </div>
+        <div class="join-bar">
+          <button class="join-mini" data-toast="已打开群聊预览">💬<span>群聊</span></button>
+          <button class="join-mini" data-open-reason>☆<span>考虑</span></button>
+          <button class="join-main" data-toast="已记录报名意愿：想参加">想参加（共创支持 ¥89）</button>
+        </div>
+      `,
+      "user-community": `
+        <div class="ops-hero">
+          <small>需求广场 · 社区互动</small>
+          <h3>低压力认识新人，可以怎么成局？</h3>
+          <p>来自 72 位用户的共鸣和评论，正在招募用户、商户和主理人响应。</p>
+        </div>
+        <div class="entry-route active">
+          <h3>需求卡｜想认识靠谱的人，但不想尴尬交换微信</h3>
+          <p>72人共鸣 · 38条评论 · 6位用户愿意参加预活动</p>
+          <div class="chips"><span class="chip">用户可共鸣</span><span class="chip orange">商户可响应</span><span class="chip blue">主理人可发起</span></div>
+          <div class="tag-explain">
+            <b>精选评论</b>
+            <p>“我不是不想认识人，是不想一上来就被评价。如果流程清楚、人数少，我会更愿意去。”</p>
+          </div>
+          <div class="action-bar">
+            <button class="ghost-btn" data-toast="已记录你的共鸣，并打开留言框">我也有这个顾虑</button>
+            <button class="primary-btn" data-toast="活动落地后会提醒你">活动落地提醒我</button>
+          </div>
+        </div>
+        <div class="proposal-card">
+          <h3>预活动招募中｜周五轻聊天晚餐局</h3>
+          <p>AI 已生成初版方案，正在等待商户和主理人确认时间、空间和承接方式。</p>
+          <div class="proposal-grid">
+            <div class="proposal-box"><b>用户</b>6/8 人已想参加</div>
+            <div class="proposal-box"><b>商户</b>1 家轻食商户待确认</div>
+            <div class="proposal-box"><b>主理人</b>1 位主持人待响应</div>
+            <div class="proposal-box"><b>状态</b>资源确认后正式发布</div>
+          </div>
+        </div>
+      `,
+      "partner-home": `
+        <div class="hero">
+          <h2>把你的资源<br>变成关系场景</h2>
+          <p>商户、主理人、空间都可以参与，不只是提供场地，而是回应真实社区需求。</p>
+          <button class="primary-btn" data-go="partner-needs">看看可响应需求</button>
+        </div>
+        <div class="card">
+          <h3>你可以录入</h3>
+          <div class="chips"><span class="chip">可用空间</span><span class="chip">闲时时段</span><span class="chip orange">主理能力</span><span class="chip blue">适合人群</span></div>
+          <p>例如：周三晚可提供一张共创桌；适合6-8人轻聊天；可提供茶饮或主题主持。</p>
+        </div>
+      `,
+      "partner-needs": `
+        <div class="ops-hero">
+          <small>需求广场 · 资源方视角</small>
+          <h3>这些需求正在寻找商户和主理人响应</h3>
+          <p>响应后不会立即发布活动，需要运营方确认资源、时间和边界。</p>
+        </div>
+        <div class="entry-route active">
+          <h3>预活动｜周五轻聊天晚餐局</h3>
+          <p>需求来源：72人共鸣“想认识靠谱的人，但不想尴尬交换微信”。</p>
+          <div class="chips"><span class="chip">需要8人桌</span><span class="chip orange">轻餐茶饮</span><span class="chip blue">主持破冰</span></div>
+          <button class="primary-btn" data-go="partner-match" style="margin-top:12px;width:100%;">我可以响应</button>
+        </div>
+        <div class="entry-route">
+          <h3>预活动｜晨间散步 + 轻食补给</h3>
+          <p>需求来源：45人表达“想开始运动，但坚持不下来”。</p>
+          <div class="chips"><span class="chip">低糖轻食</span><span class="chip orange">路线集合</span><span class="chip blue">低强度</span></div>
+          <button class="ghost-btn" data-toast="已收藏这个预活动" style="margin-top:12px;width:100%;">先收藏</button>
+        </div>
+      `,
+      "partner-match": `
+        <div class="card">
+          <h3>共创匹配中</h3>
+          <p>这不是直接发布活动，而是先确认需求、资源和规则是否成立。</p>
+          <div class="match-row">
+            <div class="mini-box"><b>用户需求</b>低压力认识新人，避免强目的感。</div>
+            <div class="arrow">→</div>
+            <div class="mini-box"><b>商户资源</b>周五晚可提供8人桌和轻餐。</div>
+          </div>
+          <div class="match-row">
+            <div class="mini-box"><b>主理人能力</b>能设计破冰问题和主持流程。</div>
+            <div class="arrow">→</div>
+            <div class="mini-box"><b>运营规则</b>6-8人，上限清楚，不强配对。</div>
+          </div>
+          <button class="orange-btn" data-toast="已提交给运营方确认" style="margin-top:14px;width:100%;">提交共创方案</button>
+        </div>
+      `,
+      "ops-dashboard": `
+        <div class="ops-hero">
+          <small>AI 社区第二大脑 · 本周洞察</small>
+          <h3>社区需求正在从“关系连接”扩展到健康、成长和社会参与</h3>
+          <p>AI 已从问答、评论、收藏和活动反馈中识别 5 类一级需求，3 个主题建议进入成局验证。</p>
+        </div>
+        <div class="ops-kpis">
+          <div class="ops-kpi"><b>186</b><span>新增需求表达</span></div>
+          <div class="ops-kpi"><b>5</b><span>一级需求分类</span></div>
+          <div class="ops-kpi"><b>3</b><span>可验证主题</span></div>
+          <div class="ops-kpi"><b>14</b><span>可匹配资源</span></div>
+        </div>
+        <div class="need-list">
+          <div class="need-row">
+            <div class="need-row-head"><b>关系连接</b><span>34% · 63人</span></div>
+            <div class="need-bar"><i style="width:34%"></i></div>
+            <div class="chips"><span class="chip">靠谱的人</span><span class="chip orange">不尴尬</span><span class="chip blue">长期社群</span></div>
+          </div>
+          <div class="need-row">
+            <div class="need-row-head"><b>健康生活</b><span>24% · 45人</span></div>
+            <div class="need-bar"><i style="width:24%"></i></div>
+            <div class="chips"><span class="chip">想运动</span><span class="chip orange">体脂焦虑</span><span class="chip blue">放松减压</span></div>
+          </div>
+          <div class="need-row">
+            <div class="need-row-head"><b>成长探索</b><span>17% · 32人</span></div>
+            <div class="need-bar"><i style="width:17%"></i></div>
+            <div class="chips"><span class="chip">学习AI</span><span class="chip orange">行业交流</span><span class="chip blue">副业伙伴</span></div>
+          </div>
+          <div class="need-row">
+            <div class="need-row-head"><b>日常陪伴 / 社会参与</b><span>25% · 46人</span></div>
+            <div class="need-bar"><i style="width:25%"></i></div>
+            <div class="chips"><span class="chip">城市散步</span><span class="chip orange">组织活动</span><span class="chip blue">社区共创</span></div>
+          </div>
+        </div>
+        <div class="quote-card">
+          <p>“我想加入一个可以长期待下去的小社群，而不是参加一次活动就结束。”</p>
+          <span>AI 判断：关系连接 + 长期社群 · 建议进入需求树</span>
+        </div>
+        <button class="primary-btn" data-go="ops-tree" style="width:100%;">查看 AI 需求树</button>
+      `,
+      "ops-tree": `
+        <div class="ops-hero">
+          <small>需求共知</small>
+          <h3>AI 把零散原话聚类成可运营主题</h3>
+          <p>每个节点都保留真实表达、人数、趋势和下一步建议。</p>
+        </div>
+        <div class="need-tree">
+          <div class="tree-branch">
+            <h3>❤️ 关系连接 <span>63人 · +18%</span></h3>
+            <div class="tree-items">
+              <div class="tree-item">想认识真诚靠谱的人，而不是尴尬交换微信 <em>32人</em></div>
+              <div class="tree-item">想找对象，但不喜欢强目的氛围 <em>18人</em></div>
+              <div class="tree-item">想加入可以长期待下去的小社群 <em>13人</em></div>
+            </div>
+          </div>
+          <div class="tree-branch">
+            <h3>🌿 健康生活 <span>45人 · +24%</span></h3>
+            <div class="tree-items">
+              <div class="tree-item">体脂有点高，想开始运动但坚持不了 <em>21人</em></div>
+              <div class="tree-item">加班太多，想找点方式放松一下 <em>15人</em></div>
+              <div class="tree-item">想让周末不要一直宅在家里 <em>9人</em></div>
+            </div>
+          </div>
+          <div class="tree-branch">
+            <h3>🚀 成长探索 <span>32人 · +12%</span></h3>
+            <div class="tree-items">
+              <div class="tree-item">想学习 AI，但不知道从哪里开始 <em>16人</em></div>
+              <div class="tree-item">想认识同行，一起交流行业经验 <em>10人</em></div>
+              <div class="tree-item">想参与公益或社会创新项目 <em>6人</em></div>
+            </div>
+          </div>
+          <div class="tree-branch">
+            <h3>✨ 社会参与 <span>21人 · 新增</span></h3>
+            <div class="tree-items">
+              <div class="tree-item">想分享自己的技能，而不仅仅是参加活动 <em>8人</em></div>
+              <div class="tree-item">想组织一次属于自己的活动 <em>7人</em></div>
+              <div class="tree-item">想参与社区建设，而不仅仅是旁观 <em>6人</em></div>
+            </div>
+          </div>
+        </div>
+        <div class="quote-card">
+          <p>AI 建议：优先验证“低压力认识新人 + 健康生活”复合主题，因为它同时具备用户热度、商户资源和主理人响应。</p>
+          <span>下一步：匹配空间 / 商户 / 主理人</span>
+        </div>
+        <button class="primary-btn" data-go="ops-resource" style="width:100%;">进入资源匹配</button>
+      `,
+      "ops-resource": `
+        <div class="ops-hero">
+          <small>资源匹配</small>
+          <h3>把创智天地已有资源转成可回应需求的场景</h3>
+          <p>AI 根据人群、时间、距离、承接能力和风险边界推荐资源组合。</p>
+        </div>
+        <div class="resource-map">
+          <div class="resource-card">
+            <div class="resource-icon">店</div>
+            <div><b>KIC 咖啡 / 轻食商户</b><span>周五晚可提供 8 人桌；可做低糖轻食套餐</span></div>
+            <div class="match-score">92%</div>
+          </div>
+          <div class="resource-card">
+            <div class="resource-icon">路</div>
+            <div><b>大学路 - 创智天地散步路线</b><span>适合低强度运动；可作为饭后轻社交延伸</span></div>
+            <div class="match-score">88%</div>
+          </div>
+          <div class="resource-card">
+            <div class="resource-icon">主</div>
+            <div><b>恰好 / 社区主理人</b><span>擅长低压力破冰、关系边界设计和现场主持</span></div>
+            <div class="match-score">95%</div>
+          </div>
+          <div class="resource-card">
+            <div class="resource-icon">群</div>
+            <div><b>企微 + 小程序触达</b><span>可分层推给 34 位高匹配用户，收集考虑原因</span></div>
+            <div class="match-score">90%</div>
+          </div>
+        </div>
+        <div class="proposal-card">
+          <h3>AI 资源判断</h3>
+          <p>资源足以支撑 2 个预活动：周五轻聊天晚餐局、周六晨间散步 + 轻食补给。建议先生成提案，由运营方确认。</p>
+        </div>
+        <button class="primary-btn" data-go="ops-proposal" style="width:100%;">生成 AI 提案</button>
+      `,
+      "ops-proposal": `
+        <div class="ops-hero">
+          <small>AI Proposal Generator</small>
+          <h3>基于需求树和资源库，生成 3 个可审核提案</h3>
+          <p>AI 负责生成，运营方负责选择、修改和确认边界。</p>
+        </div>
+        <div class="proposal-card">
+          <h3>提案 A｜周五轻聊天晚餐局</h3>
+          <p>回应：想认识靠谱的人 / 不想尴尬交换微信 / 下班后需要期待感。</p>
+          <div class="proposal-grid">
+            <div class="proposal-box"><b>目标人群</b>低压力社交需求用户 34 人</div>
+            <div class="proposal-box"><b>资源组合</b>咖啡轻食商户 + 恰好主理人</div>
+            <div class="proposal-box"><b>推送策略</b>周四 17:30 企微卡片触达</div>
+            <div class="proposal-box"><b>人工确认</b>人数上限、费用、边界说明</div>
+          </div>
+        </div>
+        <div class="proposal-card">
+          <h3>提案 B｜晨间散步 + 轻食补给</h3>
+          <p>回应：体脂焦虑 / 想运动但坚持不了 / 周末不想宅在家。</p>
+          <div class="proposal-grid">
+            <div class="proposal-box"><b>目标人群</b>健康生活需求用户 28 人</div>
+            <div class="proposal-box"><b>资源组合</b>散步路线 + 低糖轻食套餐</div>
+            <div class="proposal-box"><b>推送策略</b>周五午间推送，降低准备成本</div>
+            <div class="proposal-box"><b>风险提示</b>标注运动强度，避免过度承诺</div>
+          </div>
+        </div>
+        <div class="proposal-card">
+          <h3>提案 C｜AI 入门共学桌</h3>
+          <p>回应：想学习 AI / 想认识同行 / 想让生活有成长感。</p>
+          <div class="proposal-grid">
+            <div class="proposal-box"><b>目标人群</b>成长探索需求用户 16 人</div>
+            <div class="proposal-box"><b>资源组合</b>共享空间 + 技术志愿者</div>
+            <div class="proposal-box"><b>推送策略</b>先发需求卡，观察报名意愿</div>
+            <div class="proposal-box"><b>人工确认</b>课程边界与主理人能力</div>
+          </div>
+        </div>
+        <button class="orange-btn" data-go="ops-preactivity" style="width:100%;">发布为预活动，邀请资源方响应</button>
+      `,
+      "ops-preactivity": `
+        <div class="ops-hero">
+          <small>预活动共创</small>
+          <h3>AI 提案先进入需求广场，等待三方确认</h3>
+          <p>这一步不是正式发布，而是把需求、方案和资源缺口公开给相关角色响应。</p>
+        </div>
+        <div class="proposal-card">
+          <h3>预活动｜周五轻聊天晚餐局</h3>
+          <p>@KIC轻食商户 @恰好主理人：是否可以承接 8 人桌、轻餐茶饮和低压力破冰主持？</p>
+          <div class="proposal-grid">
+            <div class="proposal-box"><b>用户响应</b>6/8 人点击“想参加”</div>
+            <div class="proposal-box"><b>商户响应</b>待确认周五 19:00 桌位</div>
+            <div class="proposal-box"><b>主理人响应</b>待确认主持流程</div>
+            <div class="proposal-box"><b>运营确认</b>费用、边界、退款规则</div>
+          </div>
+        </div>
+        <div class="proposal-card">
+          <h3>预活动｜晨间散步 + 轻食补给</h3>
+          <p>@轻食商户 @散步主理人：是否可以提供低糖早餐补给和低强度路线陪走？</p>
+          <div class="proposal-grid">
+            <div class="proposal-box"><b>用户响应</b>12 人点击“落地提醒我”</div>
+            <div class="proposal-box"><b>商户响应</b>可提供 20 份轻食包</div>
+            <div class="proposal-box"><b>主理人响应</b>缺少路线带领者</div>
+            <div class="proposal-box"><b>状态</b>继续招募主理人</div>
+          </div>
+        </div>
+        <div class="quote-card">
+          <p>AI 待办：如果周五轻聊天晚餐局完成商户和主理人确认，自动生成正式活动详情与分层推送名单。</p>
+          <span>人工确认后进入正式触达</span>
+        </div>
+        <button class="primary-btn" data-go="ops-push" style="width:100%;">查看正式触达策略</button>
+      `,
+      "ops-push": `
+        <div class="ops-hero">
+          <small>正式触达策略</small>
+          <h3>成熟活动直接推送，新需求成局后再推送</h3>
+          <p>AI 会判断活动成熟度，避免把还没确认资源的提案直接推给用户。</p>
+        </div>
+        <div class="proposal-card">
+          <h3>路径 A｜成熟活动直接推送</h3>
+          <div class="timeline">
+            <div class="timeline-item"><span class="dot">1</span><span>已有活动：主理人、时间、地点、费用均已确认。</span></div>
+            <div class="timeline-item"><span class="dot">2</span><span>AI 匹配用户画像，生成分层推送名单。</span></div>
+            <div class="timeline-item"><span class="dot">3</span><span>用户点击后直接进入活动详情和报名页。</span></div>
+          </div>
+        </div>
+        <div class="proposal-card">
+          <h3>路径 B｜新需求先预活动共创</h3>
+          <div class="timeline">
+            <div class="timeline-item"><span class="dot">1</span><span>AI 识别新需求，生成预活动提案。</span></div>
+            <div class="timeline-item"><span class="dot">2</span><span>发布到需求广场，等待用户、商户、主理人响应。</span></div>
+            <div class="timeline-item"><span class="dot">3</span><span>资源确认后转为正式活动，再推送给高匹配用户。</span></div>
+          </div>
+        </div>
+        <div class="quote-card">
+          <p>推送文案草稿：你最近提到“想认识靠谱的人，但不想尴尬交换微信”。本周五有一场 6-8 人轻聊天晚餐局，适合先从低压力场景开始。</p>
+          <span>AI 生成 · 需人工确认语气和边界</span>
+        </div>
+        <div class="need-list">
+          <div class="need-row">
+            <div class="need-row-head"><b>预计反馈</b><span>报名 12 / 收藏 18 / 考虑 9</span></div>
+            <div class="need-bar"><i style="width:68%"></i></div>
+          </div>
+          <div class="need-row">
+            <div class="need-row-head"><b>回流学习</b><span>顾虑：时间、尴尬、人群是否同频</span></div>
+            <div class="need-bar"><i style="width:54%"></i></div>
+          </div>
+        </div>
+        <div class="action-bar">
+          <button class="ghost-btn" data-toast="已保存为待审核">保存草稿</button>
+          <button class="orange-btn" data-toast="已进入待推送队列">确认推送</button>
+        </div>
+      `
+    };
+
+    const navMap = {
+      "user-home": "user-home",
+      "user-profile": "user-profile",
+      "user-activity": "user-activity",
+      "community": "user-community",
+      "user-showcase": "user-showcase"
+    };
+
+    let currentRole = "user";
+    let currentView = "wechat-push";
+    const stepsEl = document.getElementById("steps");
+    const mobileFlowEl = document.getElementById("mobileFlow");
+    const screenEl = document.getElementById("screen");
+    const titleEl = document.getElementById("phoneTitle");
+    const phoneShell = document.querySelector(".phone-shell");
+    const roleButtons = document.querySelectorAll("[data-role]");
+    const insightTitle = document.getElementById("insightTitle");
+    const insightBody = document.getElementById("insightBody");
+    const collectList = document.getElementById("collectList");
+    const aiNote = document.getElementById("aiNote");
+    const humanNote = document.getElementById("humanNote");
+    const modal = document.getElementById("reasonModal");
+    const toast = document.getElementById("toast");
+
+    function roleFromView(id) {
+      if (id.startsWith("partner")) return "partner";
+      if (id.startsWith("ops")) return "ops";
+      return "user";
+    }
+
+    function renderSteps() {
+      stepsEl.innerHTML = flow[currentRole].map(item => `
+        <button class="step ${item.id === currentView ? "active" : ""}" data-step="${item.id}">
+          <span class="step-num">${item.no}</span>
+          <span><b>${item.title}</b><span>${item.desc}</span></span>
+        </button>
+      `).join("");
+      mobileFlowEl.innerHTML = flow[currentRole].map(item => `
+        <button class="mobile-step ${item.id === currentView ? "active" : ""}" data-step="${item.id}">
+          ${item.no}. ${item.title}
+        </button>
+      `).join("");
+    }
+
+    function render(view) {
+      currentView = view;
+      currentRole = roleFromView(view);
+      phoneShell.classList.toggle("workbench-mode", currentRole !== "user");
+      roleButtons.forEach(btn => btn.classList.toggle("active", btn.dataset.role === currentRole));
+      renderSteps();
+      screenEl.innerHTML = views[view];
+      const activeStep = flow[currentRole].find(item => item.id === view);
+      titleEl.innerHTML = `${currentRole === "user" ? "AI 社区助手" : currentRole === "partner" ? "社区资源共创" : "AI运营工作台"}<small>${activeStep ? activeStep.title : ""}</small>`;
+      const m = meta[view];
+      insightTitle.textContent = m.title;
+      insightBody.textContent = m.body;
+      collectList.innerHTML = m.collect.map(item => `<li>${item}</li>`).join("");
+      aiNote.textContent = m.ai;
+      humanNote.textContent = m.human;
+      document.querySelectorAll(".tab").forEach(tab => tab.classList.toggle("active", navMap[tab.dataset.nav] === view));
+    }
+
+    function showToast(message) {
+      toast.textContent = message;
+      toast.classList.add("show");
+      window.setTimeout(() => toast.classList.remove("show"), 1500);
+    }
+
+    roleButtons.forEach(btn => {
+      btn.addEventListener("click", () => render(flow[btn.dataset.role][0].id));
+    });
+
+    document.addEventListener("click", (event) => {
+      const step = event.target.closest("[data-step]");
+      if (step) render(step.dataset.step);
+
+      const go = event.target.closest("[data-go]");
+      if (go) render(go.dataset.go);
+
+      const nav = event.target.closest("[data-nav]");
+      if (nav && navMap[nav.dataset.nav]) render(navMap[nav.dataset.nav]);
+
+      if (event.target.closest("[data-open-reason]")) modal.classList.add("show");
+      if (event.target.closest("[data-close-modal]")) {
+        modal.classList.remove("show");
+        showToast("已收藏，并记录你的考虑原因");
+      }
+      const reason = event.target.closest("[data-reason]");
+      if (reason) {
+        modal.classList.remove("show");
+        showToast(`已记录：${reason.dataset.reason}`);
+      }
+      const toastBtn = event.target.closest("[data-toast]");
+      if (toastBtn) showToast(toastBtn.dataset.toast);
+      if (event.target.closest("[data-back]")) render(flow[currentRole][0].id);
+      const toggleOption = event.target.closest("[data-toggle-option]");
+      if (toggleOption) toggleOption.classList.toggle("active");
+    });
+
+    render(currentView);
+  </script>
+</body>
+</html>
