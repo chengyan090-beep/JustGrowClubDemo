@@ -795,7 +795,7 @@
     .photo-node.has-photo {
       background:
         linear-gradient(180deg, rgba(255,255,255,.04), rgba(15,91,66,.22)),
-        url("assets/xiaoc-avatar.png?v=20260802-final") center 18% / 76% auto no-repeat,
+        url("assets/xiaoc-avatar.png?v=20260802-imgfix") center 18% / 76% auto no-repeat,
         #f4eadf;
       color: #fffaf0;
       text-shadow: 0 2px 10px rgba(0,0,0,.2);
@@ -819,7 +819,7 @@
       border-radius: 22px;
       background:
         linear-gradient(180deg, rgba(255,255,255,.04), rgba(15,91,66,.22)),
-        url("assets/xiaoc-avatar.png?v=20260802-final") center 18% / 86% auto no-repeat,
+        url("assets/xiaoc-avatar.png?v=20260802-imgfix") center 18% / 86% auto no-repeat,
         #f4eadf;
       box-shadow: 0 12px 22px rgba(49,42,32,.12);
     }
@@ -1422,15 +1422,37 @@
 
     .solution-photo {
       position: relative;
+      overflow: hidden;
       background:
         linear-gradient(180deg, rgba(0,0,0,0), rgba(0,0,0,.44)),
-        url("assets/event-dinner-chat.png?v=20260802-final") center / cover no-repeat;
+        url("assets/event-dinner-chat.png?v=20260802-imgfix") center / cover no-repeat;
     }
 
     .solution-photo.warm {
       background:
         linear-gradient(180deg, rgba(0,0,0,0), rgba(0,0,0,.42)),
-        url("assets/event-walk-lightmeal.png?v=20260802-final") center / cover no-repeat;
+        url("assets/event-walk-lightmeal.png?v=20260802-imgfix") center / cover no-repeat;
+    }
+
+    .activity-img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      z-index: 0;
+    }
+
+    .solution-photo::after,
+    .event-photo::after,
+    .detail-hero-photo::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(0,0,0,0), rgba(0,0,0,.46));
+      z-index: 1;
+      pointer-events: none;
     }
 
     .solution-photo span {
@@ -1440,6 +1462,8 @@
       color: #fff;
       font-size: 11px;
       font-weight: 900;
+      z-index: 2;
+      text-shadow: 0 2px 8px rgba(0,0,0,.3);
     }
 
     .solution-info {
@@ -1610,15 +1634,16 @@
 
     .event-photo {
       position: relative;
+      overflow: hidden;
       background:
         linear-gradient(180deg, rgba(0,0,0,0), rgba(0,0,0,.42)),
-        url("assets/event-dinner-chat.png?v=20260802-final") center / cover no-repeat;
+        url("assets/event-dinner-chat.png?v=20260802-imgfix") center / cover no-repeat;
     }
 
     .event-card.warm .event-photo {
       background:
         linear-gradient(180deg, rgba(0,0,0,0), rgba(0,0,0,.42)),
-        url("assets/event-walk-lightmeal.png?v=20260802-final") center / cover no-repeat;
+        url("assets/event-walk-lightmeal.png?v=20260802-imgfix") center / cover no-repeat;
     }
 
     .event-photo span {
@@ -1628,6 +1653,8 @@
       color: #fff;
       font-size: 12px;
       font-weight: 900;
+      z-index: 2;
+      text-shadow: 0 2px 8px rgba(0,0,0,.3);
     }
 
     .event-info {
@@ -1676,9 +1703,18 @@
       flex-direction: column;
       justify-content: flex-end;
       color: #fffaf0;
+      position: relative;
+      overflow: hidden;
       background:
         linear-gradient(180deg, rgba(0,0,0,.12), rgba(0,0,0,.62)),
-        url("assets/event-dinner-chat.png?v=20260802-final") center / cover no-repeat;
+        url("assets/event-dinner-chat.png?v=20260802-imgfix") center / cover no-repeat;
+    }
+
+    .detail-hero-photo h2,
+    .detail-hero-photo p,
+    .detail-hero-photo .chips {
+      position: relative;
+      z-index: 2;
     }
 
     .detail-hero-photo h2 {
@@ -1815,7 +1851,7 @@
       border-radius: 28px;
       background:
         linear-gradient(180deg, rgba(255,255,255,.04), rgba(15,91,66,.22)),
-        url("assets/xiaoc-avatar.png?v=20260802-final") center 18% / 86% auto no-repeat,
+        url("assets/xiaoc-avatar.png?v=20260802-imgfix") center 18% / 86% auto no-repeat,
         #f4eadf;
       box-shadow: 0 14px 28px rgba(49,42,32,.14);
     }
@@ -4446,7 +4482,10 @@
         </div>
         <div class="solution-label">优先推荐 3 个活动 <span>不喜欢可顺延</span></div>
         <div class="solution-card">
-          <div class="solution-photo"><span>42人想参加｜6人已成局</span></div>
+          <div class="solution-photo">
+            <img class="activity-img" src="assets/event-dinner-chat.png?v=20260802-imgfix" alt="周五轻聊天晚餐局现场" loading="eager" decoding="async">
+            <span>42人想参加｜6人已成局</span>
+          </div>
           <div class="solution-info">
             <div>
               <div class="event-date"><b>8/02</b><span>周五<br>19:30</span></div>
@@ -4463,7 +4502,10 @@
           </div>
         </div>
         <div class="solution-card">
-          <div class="solution-photo warm"><span>18人共鸣｜招募中</span></div>
+          <div class="solution-photo warm">
+            <img class="activity-img" src="assets/event-walk-lightmeal.png?v=20260802-imgfix" alt="晨间散步和轻食补给" loading="eager" decoding="async">
+            <span>18人共鸣｜招募中</span>
+          </div>
           <div class="solution-info">
             <div>
               <div class="event-date"><b>8/03</b><span>周六<br>16:00</span></div>
@@ -4480,7 +4522,10 @@
           </div>
         </div>
         <div class="event-card">
-          <div class="event-photo"><span>16人想学｜待成局</span></div>
+          <div class="event-photo">
+            <img class="activity-img" src="assets/event-dinner-chat.png?v=20260802-imgfix" alt="AI 入门共学桌小组交流" loading="eager" decoding="async">
+            <span>16人想学｜待成局</span>
+          </div>
           <div class="event-info">
             <div>
               <div class="event-date"><b>8/07</b><span>周三<br>19:00</span></div>
@@ -4499,7 +4544,10 @@
           <span class="category-pill">成长</span>
         </div>
         <div class="event-card warm">
-          <div class="event-photo"><span>24人收藏｜开放报名</span></div>
+          <div class="event-photo">
+            <img class="activity-img" src="assets/event-walk-lightmeal.png?v=20260802-imgfix" alt="大学路早咖啡散步" loading="eager" decoding="async">
+            <span>24人收藏｜开放报名</span>
+          </div>
           <div class="event-info">
             <div>
               <div class="event-date"><b>8/10</b><span>周六<br>10:00</span></div>
@@ -4519,6 +4567,7 @@
           推荐理由：低压力社交需求高匹配 · KIC附近 · 下班后可达
         </div>
         <div class="detail-hero-photo">
+          <img class="activity-img" src="assets/event-dinner-chat.png?v=20260802-imgfix" alt="周五轻聊天晚餐局" loading="eager" decoding="async">
           <h2>周五轻聊天晚餐局</h2>
           <p>小人数饭局，用清楚流程降低第一次见面的尴尬。</p>
           <div class="chips"><span class="chip">6-8人</span><span class="chip orange">低压力</span><span class="chip blue">KIC附近</span></div>

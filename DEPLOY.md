@@ -34,3 +34,18 @@
 https://chengyan090-beep.github.io/JustGrowClubDemo/
 
 如果刚开启 Pages，通常需要等待 1-3 分钟生效。
+
+## 每次更新后的必检项
+
+每次更新 GitHub 后，都需要用带版本号的公开链接检查，而不是只看本地页面。
+
+示例：
+
+https://chengyan090-beep.github.io/JustGrowClubDemo/?v=commit-id
+
+必检内容：
+
+- 首页推荐区的活动图片是否完整显示
+- 活动详情页顶部图片是否完整显示
+- `assets/event-dinner-chat.png`、`assets/event-walk-lightmeal.png`、`assets/xiaoc-avatar.png` 是否能从外部直接打开
+- 首页关键入口是否跳转正确，尤其是「需求广场」「资源响应」「活动详情」
